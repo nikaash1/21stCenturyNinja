@@ -23,7 +23,15 @@ double getSensorVelocity(){
   return (RF.velocity(velocityUnits::dps)+RB.velocity(velocityUnits::dps)+LF.velocity(velocityUnits::dps)+LB.velocity(velocityUnits::dps))/4;
 }
 
-void calculatePID(double kP, double kI, double kD, double minErrorI, double maxErrorI, double maxPowerI, double acceptableError, double acceptableVelocity){
+static double ILimit (double input1, double floor, double ceiling){
+  if (input1<=floor)return floor;
+  if (input1>=ceiling)return ceiling;
+  return input1;
+}
+
+
+ //calculate PID values
+double calculatePID(double kP, double kI, double kD, double minErrorI, double maxErrorI, double maxPowerI, double acceptableError, double acceptableVelocity){
 
   error = 0;
   desiredValue = 0;
@@ -31,7 +39,8 @@ void calculatePID(double kP, double kI, double kD, double minErrorI, double maxE
   iVal = 0;
   dVal = 0;
 
-  //calculate PID values
+
+
   sensorPosition = getSensorPos();
   sensorVelocity = getSensorVelocity();
   error = desiredValue - sensorPosition;
@@ -51,12 +60,23 @@ void calculatePID(double kP, double kI, double kD, double minErrorI, double maxE
   //calculate D
   dVal = sensorVelocity;
 
+  return pVal*kP+ILimit(iVal*kI, -maxPowerI, maxPowerI)+dVal*kD;
+
+}
+
+void incrementDesiredValue(double value){desiredValue += value;}
+void setDesiredValue(double value){desiredValue = value;}
+double getDesiredValue(){return desiredValue;}
+
+/*double getMotorPower(){
+    return calculatePID();
+}*/
+
+void straightPID(){
+
 }
 
 void turnPID(){
 
 }
 
-void straightPID(){
-
-}

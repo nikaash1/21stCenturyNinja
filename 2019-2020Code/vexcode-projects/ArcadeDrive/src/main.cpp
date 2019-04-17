@@ -3,8 +3,8 @@
 
 //#include "robot-config.h"
 //#include "Autonomous.cpp"
-#include "PID.cpp"
-//#include "Commands.cpp"
+//#include "PID.cpp"
+#include "Commands.cpp"
 #include <string>
 #include <cmath>
 
@@ -16,8 +16,7 @@ float stickDead = 6;
 int brakeVar = 0;
 double turnSpeed = 1;
 double straightSpeed = 0.92;
-int autoColor = 0;
-int autoSide = 0;
+
 
 #define FORWARD 1
 #define BACKWARD -1
@@ -28,8 +27,8 @@ int autoSide = 0;
 #define OLDVEX 127
 #define LEFT 1
 #define RIGHT -1
-#define RED 1
-#define BLUE 2
+#define RED 0
+#define BLUE 1
 #define RIGHT_AXIS_Y 2
 #define LEFT_AXIS_Y 3
 #define RIGHT_AXIS_X 1
@@ -43,7 +42,17 @@ void pre_auton( void ) {
 
 void autonomous( void ) {
 
-  runAuto(autoSide, autoColor);
+  //runAuto(autoSide, autoColor);
+
+  runAuto(autoPositionSelect(),autoColorSelect(),true);
+
+  //straightPID(1, 200, 24);
+
+
+
+  driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
+  Brain.Screen.print(PLoop(200, 200, 200, 200));
+ 
 
 }
 

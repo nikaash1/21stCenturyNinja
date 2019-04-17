@@ -1,4 +1,5 @@
 #include "robot-config.h"
+//#include "PID.cpp"
 #include <string>
 #include <cmath>
 
@@ -90,7 +91,7 @@ void setDriveStraight(double speed){
 
 }
 
-/*void yieldaction(int time){
+void yieldaction(int time){
   int i = 0;
   while (i < time){
     task::sleep(1);
@@ -98,4 +99,47 @@ void setDriveStraight(double speed){
   }
 
   i = 0;
-}*/
+}
+
+
+
+
+
+
+
+//AUTONOMOUS COMMAND
+void runAuto(int autoNumber, int autoColor){
+
+  //red
+  if (autoColor == 1){
+    if (autoNumber == 1){
+
+    }
+    if (autoNumber == 2){
+
+    }
+    if (autoNumber == 3){
+
+    }
+    if (autoNumber == 4){
+
+    }
+  }
+
+  //blue
+  if (autoColor == 2){
+    if (autoNumber == 1){
+
+    }
+    if (autoNumber == 2){
+
+    }
+    if (autoNumber == 3){
+
+    }
+    if (autoNumber == 4){
+
+    }
+  }
+
+}

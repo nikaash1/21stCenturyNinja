@@ -1,5 +1,31 @@
 #include "robot-config.h"
 
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+
+void movebase(int speed){
+    Lwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Lwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Rwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Rwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    
+
+}
+
+void turnbase(int speed, int direction){
+    Lwheel.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
+    Lwheel2.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
+    Rwheel2.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+    Rwheel.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+    
+
+}
+
+
+
 void goo(int direction, int speed, float inches, int degrees2, int time){
     
     float degrees = 28.5*inches;
