@@ -44,7 +44,7 @@ void autonomous( void ) {
 
   //runAuto(autoSide, autoColor);
 
-  runAuto(autoPositionSelect(),autoColorSelect(),true);
+  runAuto(autoColorSelect(),autoPositionSelect(),true);
 
   //straightPID(1, 200, 24);
 

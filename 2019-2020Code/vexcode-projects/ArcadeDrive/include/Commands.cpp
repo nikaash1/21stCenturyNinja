@@ -3,8 +3,8 @@
 #include <string>
 #include <cmath>
 double speed1;
-int autoCol = 0;
-int autoNum = 0;
+//int autoCol = 0;
+//int autoNum = 0;
 
 //functions
 
@@ -207,24 +207,23 @@ void goP(){
   driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
 }
 
-//this will be the color input for argument within runAuto function
+//this will be the input for color argument within runAuto function (this is probably a lie)
 int autoColorSelect(){
+  int autoCol = 0;
     if (Brain.Screen.pressing()){
         if (autoCol == 0){
           autoCol = 1;
-          Brain.Screen.drawRectangle(15, 15, 50, 50, blue);
         }
         else if (autoCol == 1){
           autoCol = 0;
-          Brain.Screen.drawRectangle(15, 15, 50, 50, red);
         }
       }
   return autoCol;
 }
 
-//this will be the number input for argument within runAuto function
+//this will be the input for number argument within runAuto function (this is also probably not true)
 int autoPositionSelect(){
-
+  double autoNum = 0;
   return autoNum;
 
 }
@@ -232,11 +231,11 @@ int autoPositionSelect(){
 
 
 //AUTONOMOUS COMMAND
-void runAuto(int autoNumber, int autoColor, bool running){
+void runAuto(int autoColor, int autoNumber, bool running){
   if (running){
   //red
     if (autoColor == 0){
-      Brain.Screen.print("RED");
+      Brain.Screen.drawRectangle(15, 15, 50, 50, red);
       if (autoNumber == 1){
 
         straightPID(1, 1, 24);
@@ -256,7 +255,7 @@ void runAuto(int autoNumber, int autoColor, bool running){
 
     //blue
     if (autoColor == 1){
-      Brain.Screen.print("BLUE");
+      Brain.Screen.drawRectangle(15, 15, 50, 50, blue);
       if (autoNumber == 1){
 
       }
