@@ -207,7 +207,7 @@ void goP(){
   driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
 }
 
-
+//this will be the color input for argument within runAuto function
 int autoColorSelect(){
     if (Brain.Screen.pressing()){
         if (autoCol == 0){
@@ -222,6 +222,7 @@ int autoColorSelect(){
   return autoCol;
 }
 
+//this will be the number input for argument within runAuto function
 int autoPositionSelect(){
 
   return autoNum;
