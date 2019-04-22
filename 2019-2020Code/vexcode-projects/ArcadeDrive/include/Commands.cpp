@@ -2,7 +2,32 @@
 #include "PID.cpp"
 #include <string>
 #include <cmath>
+
 double speed1;
+
+float stickDead = 6;
+int brakeVar = 0;
+double turnSpeed = 1;
+double straightSpeed = 0.92;
+double autoCol;
+double autoPos;
+
+
+#define FORWARD 1
+#define BACKWARD -1
+#define REVERSE -1
+#define FAST 200
+#define MEDIUM 100
+#define SLOW 50
+#define OLDVEX 127
+#define LEFT 1
+#define RIGHT -1
+#define RED 0
+#define BLUE 1
+#define RIGHT_AXIS_Y 2
+#define LEFT_AXIS_Y 3
+#define RIGHT_AXIS_X 1
+#define LEFT_AXIS_X 4
 //int autoCol = 0;
 //int autoNum = 0;
 
@@ -40,7 +65,7 @@ void stopall(int time){
     
 }
 
-void basebrake (int time){
+void baseBrakeHold (int time){
     vex::task::sleep(time);
     Lwheel.stop(vex::brakeType::hold);
     Lwheel2.stop(vex::brakeType::hold);
@@ -48,7 +73,7 @@ void basebrake (int time){
     Rwheel2.stop(vex::brakeType::hold);
 }
 
-void baseunbrake (int time){
+void baseBrakeCoast (int time){
     vex::task::sleep(time);
     Lwheel.stop(vex::brakeType::coast);
     Lwheel2.stop(vex::brakeType::coast);
@@ -107,15 +132,40 @@ void driveStraightEncoders(int direction, double speed, double degrees){
 
 }
 
+void stopDriveLeft(){
+
+  //wait(time);
+  LB.stop(brakeType::hold);
+  LF.stop(brakeType::hold);
+
+}
+
+void stopDriveRight(){
+
+  //wait(time);
+  RB.stop(brakeType::hold);
+  RF.stop(brakeType::hold);
+
+}
+
+void stopDrive(double time){
+
+  wait(time);
+  stopDriveLeft();
+  stopDriveRight();
+
+}
+
+
 void spinEncoder(int direction, double speed, double degrees){
 
 
-  RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
-  RF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
-  LB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
-  LF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
+  
   while(getSensorPos()<degrees){
-    wait(1);
+    RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
+    RF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
+    LB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
+    LF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
   }
 
   Lwheel.stop();
@@ -133,11 +183,13 @@ void straightPID(int direction, double speed, double degrees){
   error = 1;
   while (abs(error) > 0){
   speed = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
-  driveStraightEncoders(direction, speed, inches);
+  setDriveStraight(direction*speed);
 
-  while(RF.isSpinning()){
+  while((Rwheel.isSpinning())||(Lwheel.isSpinning())){
     wait(1);
   }
+
+  stopDrive(0);
   }
 }
 
@@ -208,8 +260,8 @@ void goP(){
 }
 
 //this will be the input for color argument within runAuto function (this is probably a lie)
-int autoColorSelect(){
-  int autoCol = 0;
+void autoColorSelect(){
+  //int autoCol = 0;
     if (Brain.Screen.pressing()){
         if (autoCol == 0){
           autoCol = 1;
@@ -218,16 +270,24 @@ int autoColorSelect(){
           autoCol = 0;
         }
       }
-  return autoCol;
+  //return autoCol;
 }
 
 //this will be the input for number argument within runAuto function (this is also probably not true)
-int autoPositionSelect(){
-  double autoNum = 0;
-  return autoNum;
+void autoPositionSelect(){
+  //double autoNum = 0;
+  //return autoNum;
 
 }
 
+
+int autoColorReturn(){
+  return autoCol;
+}
+
+int autoPositionReturn(){
+  return autoPos;
+}
 
 
 //AUTONOMOUS COMMAND

@@ -12,10 +12,10 @@ vex::competition    Competition;
 using namespace std;
 
 //variables
-float stickDead = 6;
+/*float stickDead = 6;
 int brakeVar = 0;
 double turnSpeed = 1;
-double straightSpeed = 0.92;
+double straightSpeed = 0.92;*/
 
 
 #define FORWARD 1
@@ -36,6 +36,8 @@ double straightSpeed = 0.92;
 
 
 void pre_auton( void ) {
+
+  autoColorSelect();
   
 }
 
@@ -44,7 +46,7 @@ void autonomous( void ) {
 
   //runAuto(autoSide, autoColor);
 
-  runAuto(autoColorSelect(),autoPositionSelect(),true);
+  runAuto(autoColorReturn(),autoPositionReturn(),true);
 
   //straightPID(1, 200, 24);
 
@@ -76,19 +78,13 @@ void usercontrol( void ) {
     //brake
     if ((Controller1.ButtonY.pressing())&&(brakeVar == 0)){
       brakeVar = 1;
-      Lwheel.stop(vex::brakeType::hold);
-      Rwheel.stop(vex::brakeType::hold);
-      Lwheel2.stop(vex::brakeType::hold);
-      Rwheel2.stop(vex::brakeType::hold);
+      baseBrakeHold(0);
       vex::task::sleep(300);
     }
 
     if ((Controller1.ButtonY.pressing())&&(brakeVar == 1)){
       brakeVar = 0;
-      Lwheel.stop(vex::brakeType::coast);
-      Rwheel.stop(vex::brakeType::coast);
-      Lwheel2.stop(vex::brakeType::coast);
-      Rwheel2.stop(vex::brakeType::coast);
+      baseBrakeCoast(0);
       vex::task::sleep(300);
     }
 
