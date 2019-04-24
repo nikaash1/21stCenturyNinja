@@ -51,24 +51,24 @@ double calculatePID(double kP, double kI, double kD, double minErrorI, double ma
   error = desiredValue - sensorPosition;
 
   //calculate P
-  pVal = error;
+  pVal = 200;
 
   //add newest I value
-  if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
+  /*if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
     iVal += error;
   }
 
   else if (abs(error)<=minErrorI){
     iVal = 0;
-  }
+  }*/
 
   //calculate D
 
 
-  dVal = (abs(sensorPosition))/sensorPosition;
+  //dVal = (abs(sensorPosition))/sensorPosition;
 
 
-  return pVal*kP+ILimit(iVal*kI, -maxPowerI, maxPowerI)+dVal*kD;
+  return pVal/*kP+ILimit(iVal*kI, -maxPowerI, maxPowerI)+dVal*kD*/;
 
 }
 

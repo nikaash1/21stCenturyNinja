@@ -37,7 +37,7 @@ double straightSpeed = 0.92;*/
 
 void pre_auton( void ) {
 
-  autoColorSelect();
+  
   
 }
 
@@ -46,14 +46,18 @@ void autonomous( void ) {
 
   //runAuto(autoSide, autoColor);
 
-  runAuto(autoColorReturn(),autoPositionReturn(),true);
+  //runAuto(autoColorReturn(),autoPositionReturn(),true);
 
-  //straightPID(1, 200, 24);
+  straightPID(1, 200, 24);
+  //setDriveStraight(100);
+
+  //setDriveRight(200);
+//spinEncoder(1, 200, 600);
 
 
 
-  driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
-  Brain.Screen.print(PLoop(200, 200, 200, 200));
+  //driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
+  //Brain.Screen.print(PLoop(200, 200, 200, 200));
  
 
 }
@@ -97,6 +101,13 @@ int main() {
   Competition.autonomous( autonomous );
   Competition.drivercontrol( usercontrol );
   while (true){
+    if (Brain.Screen.pressing()){
+
+      
+      autoColorSelect();
+      wait(300);
+
+    }
     //vibrate when base motors are hot
     if (RF.temperature(vex::percentUnits::pct) >= 60){
       Controller1.rumble("-");

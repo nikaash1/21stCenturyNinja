@@ -161,7 +161,7 @@ void spinEncoder(int direction, double speed, double degrees){
 
 
   
-  while(getSensorPos()<degrees){
+  while(abs(getSensorPos())<abs(degrees)){
     RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
     RF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
     LB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
@@ -181,16 +181,15 @@ void straightPID(int direction, double speed, double degrees){
 
   double inches = degrees*28.5;
   error = 1;
-  while (abs(error) > 0){
-  speed = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
-  setDriveStraight(direction*speed);
+  double speed2 = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
+  setDriveStraight(direction*speed2*speed);
 
-  while((Rwheel.isSpinning())||(Lwheel.isSpinning())){
+  /*while((Rwheel.isSpinning())||(Lwheel.isSpinning())){
     wait(1);
-  }
+  }*/
 
-  stopDrive(0);
-  }
+  //stopDrive(0);
+ 
 }
 
 void turnPID(){
@@ -210,7 +209,7 @@ void yieldaction(int time){
 }
 
 
-double PLoop(double d1, double d2, double d3, double speed){
+/*double PLoop(double d1, double d2, double d3, double speed){
   double sensorPos = getSensorPos();
   error = (d1+d2+d3) - sensorPos;
   //speed2 = speed1;
@@ -218,34 +217,34 @@ double PLoop(double d1, double d2, double d3, double speed){
     double x = (sensorPos+10)/d1;
     double setspeed = speed*x;
     speed1 = setspeed;
-    return setspeed;
+    return 5;
   }
 
   if ((sensorPos > d1)&&(sensorPos <= d1+d2)){
     double setspeed = speed;
     speed1 = setspeed;
-    return setspeed;
+    return 5;
   }
 
   if ((sensorPos > d1+d2)){
     double y = 1 - (sensorPos-(d1+d2));
     double setspeed = speed*y;
     speed1 = setspeed;
-    return setspeed;
+    return 5;
   }
 
   else{
-    return 200;
+    return 5;
   }
 
-/*else{
+else{
   return 0;
-}*/
+}
  
 
-}
+}*/
 
-void runP(double d1, double d2, double d3, double speed){
+/*void runP(double d1, double d2, double d3, double speed){
 
   
   do{
@@ -256,20 +255,27 @@ void runP(double d1, double d2, double d3, double speed){
 }
 
 void goP(){
-  driveStraightEncoders(1, PLoop(200, 200, 200, 200), 600);
-}
+  spinEncoder(1, PLoop(400,200,400,50), 1000);
+  Brain.Screen.print(speed1);
+  //spinEncoder(1, 200, 600);
+}*/
 
 //this will be the input for color argument within runAuto function (this is probably a lie)
 void autoColorSelect(){
   //int autoCol = 0;
-    if (Brain.Screen.pressing()){
+    //if (Brain.Screen.pressing()){
         if (autoCol == 0){
+          wait(200);
           autoCol = 1;
+          Brain.Screen.drawRectangle(15, 15, 50, 50, blue);
         }
         else if (autoCol == 1){
+          wait(200);
+          Brain.Screen.drawRectangle(15, 15, 50, 50, red);
           autoCol = 0;
         }
-      }
+        
+      //}
   //return autoCol;
 }
 
@@ -295,10 +301,11 @@ void runAuto(int autoColor, int autoNumber, bool running){
   if (running){
   //red
     if (autoColor == 0){
-      Brain.Screen.drawRectangle(15, 15, 50, 50, red);
+      
       if (autoNumber == 1){
 
-        straightPID(1, 1, 24);
+        //straightPID(1, 1, 24);
+        //goP();
 
       }
       if (autoNumber == 2){
@@ -315,7 +322,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
 
     //blue
     if (autoColor == 1){
-      Brain.Screen.drawRectangle(15, 15, 50, 50, blue);
+      
       if (autoNumber == 1){
 
       }
