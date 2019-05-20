@@ -13,7 +13,7 @@ double desiredValue;
 double pVal;
 double iVal;
 double dVal;
-double sensorPosition;
+double driveSensorPosition;
 double sensorVelocity;
 
 
@@ -28,7 +28,7 @@ double getSensorVelocity(){
   return (Rwheel.velocity(velocityUnits::dps)+Rwheel2.velocity(velocityUnits::dps)+Lwheel.velocity(velocityUnits::dps)+Lwheel2.velocity(velocityUnits::dps))/4;
 }
 
-static double ILimit (double input1, double floor, double ceiling){
+double ILimit (double input1, double floor, double ceiling){
   if (input1<=floor)return floor;
   if (input1>=ceiling)return ceiling;
   else{return input1;}
@@ -41,17 +41,17 @@ double calculatePID(double kP, double kI, double kD, double minErrorI, double ma
   double error = 0;
   //desiredValue = 0;
   double pVal;
-  double iVal = 0;
-  double dVal = 0;
+  //double iVal = 0;
+  //double dVal = 0;
 
 
 
-  double sensorPosition = getSensorPos();
+  driveSensorPosition = getSensorPos();
   //double sensorVelocity = getSensorVelocity();
-  error = desiredValue - sensorPosition;
+  error = desiredValue - driveSensorPosition;
 
   //calculate P
-  pVal = 200;
+  pVal = 200; //pVal = error
 
   //add newest I value
   /*if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
@@ -67,8 +67,10 @@ double calculatePID(double kP, double kI, double kD, double minErrorI, double ma
 
   //dVal = (abs(sensorPosition))/sensorPosition;
 
+  long integral = ILimit(iVal*kI, -maxPowerI, maxPowerI);
 
-  return pVal/*kP+ILimit(iVal*kI, -maxPowerI, maxPowerI)+dVal*kD*/;
+
+  return (pVal*kP)+(integral)+(dVal*kD);
 
 }
 

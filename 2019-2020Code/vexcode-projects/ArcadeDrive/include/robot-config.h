@@ -18,6 +18,7 @@ vex::motor Lwheel2 = vex::motor(vex::PORT10);
 vex::motor Lwheel = vex::motor(vex::PORT9,true);
 vex::motor Rwheel2 = vex::motor(vex::PORT2,true);
 vex::motor Rwheel = vex::motor(vex::PORT1);
+vex::motor Intake = vex::motor(vex::PORT12);
 
 
 

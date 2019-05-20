@@ -118,6 +118,16 @@ void setDriveStraight(double speed){
 
 }
 
+void setDrive(double leftspeed, double rightspeed){
+
+  RB.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);  
+  RF.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);
+  LB.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);
+
+}
+
+
 void driveStraightEncoders(int direction, double speed, double degrees){
 
   Lwheel.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
@@ -180,9 +190,12 @@ void spinEncoder(int direction, double speed, double degrees){
 void straightPID(int direction, double speed, double degrees){
 
   double inches = degrees*28.5;
-  error = 1;
-  double speed2 = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
-  setDriveStraight(direction*speed2*speed);
+  double speed2;
+  //error = 1;
+  while ((getSensorPos()) < abs(inches)){
+    speed2 = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
+    setDriveStraight(direction*speed2*speed);
+  }
 
   /*while((Rwheel.isSpinning())||(Lwheel.isSpinning())){
     wait(1);
@@ -206,6 +219,12 @@ void yieldaction(int time){
   }
 
   i = 0;
+}
+
+void intakespin(double speed, double direction){
+
+  Intake.spin(vex::directionType::fwd, direction*speed, vex::velocityUnits::rpm);
+
 }
 
 

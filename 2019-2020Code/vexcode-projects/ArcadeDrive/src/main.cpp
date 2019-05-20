@@ -75,8 +75,14 @@ void usercontrol( void ) {
 
     //arcade drive
     if (brakeVar == 1){
-      setDriveLeft(straightSpeed*(getAnalog(LEFT_AXIS_Y))-(getAnalog(RIGHT_AXIS_X)*-1)*turnSpeed);
+      setDriveLeft(straightSpeed*(getAnalog(LEFT_AXIS_Y))-(getAnalog(RIGHT_AXIS_X)*-1*turnSpeed));
       setDriveRight(straightSpeed*(getAnalog(LEFT_AXIS_Y))-(getAnalog(RIGHT_AXIS_X)*turnSpeed));
+    }
+
+    if ((Controller1.ButtonR2.pressing())){
+
+      
+
     }
 
     //brake

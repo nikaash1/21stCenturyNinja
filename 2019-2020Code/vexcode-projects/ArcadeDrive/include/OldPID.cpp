@@ -182,9 +182,6 @@ void turnsmall(float direction, float degrees, float speed, float wait){
     Lwheel2.stop(vex::brakeType::coast);
     
     
-    
-    
-    
 }
 
 
