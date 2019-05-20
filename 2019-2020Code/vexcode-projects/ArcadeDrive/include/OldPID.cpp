@@ -1,5 +1,4 @@
-#include "robot-config.h"
-
+#include "RobotMap.h"
 #include <string>
 #include <cmath>
 

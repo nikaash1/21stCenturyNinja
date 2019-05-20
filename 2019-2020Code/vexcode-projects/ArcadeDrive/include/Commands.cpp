@@ -19,7 +19,7 @@ double autoPos;
 #define FAST 200
 #define MEDIUM 100
 #define SLOW 50
-#define OLDVEX 127
+#define ROBOTCFAST 127
 #define LEFT 1
 #define RIGHT -1
 #define RED 0

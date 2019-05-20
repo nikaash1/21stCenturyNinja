@@ -1,4 +1,4 @@
-#include "robot-config.h"
+#include "RobotMap.h"
 //#include "Commands.cpp"
 #include <string>
 #include <cmath>
@@ -51,7 +51,8 @@ double calculatePID(double kP, double kI, double kD, double minErrorI, double ma
   error = desiredValue - driveSensorPosition;
 
   //calculate P
-  pVal = 200; //pVal = error
+  pVal = error;
+  //pVal = 200; //pVal = error
 
   //add newest I value
   /*if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
