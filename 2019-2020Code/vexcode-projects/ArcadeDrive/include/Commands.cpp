@@ -9,6 +9,8 @@ float stickDead = 6;
 int brakeVar = 0;
 double turnSpeed = 1;
 double straightSpeed = 0.92;
+double hSpeed = 1;
+double mechSpeed = 1;
 double autoCol;
 double autoPos;
 
@@ -109,6 +111,19 @@ void setDriveLeft(double speed){
     
 }
 
+void setDriveH(double speed){
+
+  MH.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+
+}
+
+void strafeMech(double speed){
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);
+  RB.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);  
+  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+}
+
 void setDriveStraight(double speed){
 
   RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
@@ -158,18 +173,32 @@ void stopDriveRight(){
 
 }
 
-void stopDrive(double time){
+void stopDriveH(){
+
+  //wait(time);
+  MH.stop(brakeType::hold);
+
+}
+
+void stopDriveFull(double time){
 
   wait(time);
   stopDriveLeft();
   stopDriveRight();
+  stopDriveH();
 
+}
+
+void stopDrive(int time){
+
+  wait(time);
+  stopDriveLeft();
+  stopDriveRight();
+  
 }
 
 
 void spinEncoder(int direction, double speed, double degrees){
-
-
   
   while(abs(getSensorPos())<abs(degrees)){
     RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
@@ -182,8 +211,6 @@ void spinEncoder(int direction, double speed, double degrees){
   Lwheel2.stop();
   Rwheel.stop();
   Rwheel2.stop();
-
-
 
 }
 

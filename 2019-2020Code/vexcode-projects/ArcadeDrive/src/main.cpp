@@ -71,12 +71,21 @@ void usercontrol( void ) {
     if (brakeVar == 0){
       setDriveRight(getAnalog(RIGHT_AXIS_Y));
       setDriveLeft(getAnalog(LEFT_AXIS_Y));
+
+      //H-Drive Tank (uncomment)
+      //setDriveH(hSpeed*((0.5*(getAnalog(LEFT_AXIS_X)))+(0.5*(getAnalog(RIGHT_AXIS_X)))));
     }
 
     //arcade drive
     if (brakeVar == 1){
       setDriveLeft(straightSpeed*(getAnalog(LEFT_AXIS_Y))-(getAnalog(RIGHT_AXIS_X)*-1*turnSpeed));
       setDriveRight(straightSpeed*(getAnalog(LEFT_AXIS_Y))-(getAnalog(RIGHT_AXIS_X)*turnSpeed));
+
+      //H-Drive Arcade (uncomment)
+      //setDriveH(hSpeed*(getAnalog(LEFT_AXIS_X)));
+
+      //Mechanum Arcade (uncomment)
+      //strafeMech(mechSpeed*(getAnalog(LEFT_AXIS_X)));
     }
 
     if ((Controller1.ButtonR2.pressing())){
@@ -85,7 +94,7 @@ void usercontrol( void ) {
 
     }
 
-    //brake
+    //brake and switch to arcade
     if ((Controller1.ButtonY.pressing())&&(brakeVar == 0)){
       brakeVar = 1;
       baseBrakeHold(0);
@@ -109,7 +118,6 @@ int main() {
   while (true){
     if (Brain.Screen.pressing()){
 
-      
       autoColorSelect();
       wait(300);
 

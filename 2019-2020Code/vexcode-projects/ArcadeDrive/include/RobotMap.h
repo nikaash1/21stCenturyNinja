@@ -15,9 +15,10 @@ vex::brain Brain;
 vex::controller Controller1 = vex::controller();
 
 vex::motor Lwheel2 = vex::motor(vex::PORT10);
-vex::motor Lwheel = vex::motor(vex::PORT9,true);
-vex::motor Rwheel2 = vex::motor(vex::PORT2,true);
-vex::motor Rwheel = vex::motor(vex::PORT1);
+vex::motor Lwheel = vex::motor(vex::PORT16);
+vex::motor Rwheel2 = vex::motor(vex::PORT5,true);
+vex::motor Rwheel = vex::motor(vex::PORT15,true);
+vex::motor Hwheel = vex::motor(vex::PORT17);
 vex::motor Intake = vex::motor(vex::PORT12);
 
 
@@ -48,9 +49,10 @@ using namespace vex;
 
 
 //motor configuration for the ones that should be able to run voltage
-motor_special RF(vex::PORT1);
-motor_special RB(vex::PORT2);
-motor_special LF(vex::PORT9);
+motor_special RF(vex::PORT15);
+motor_special RB(vex::PORT5);
+motor_special LF(vex::PORT16);
 motor_special LB(vex::PORT10);
+motor_special MH(vex::PORT13);
 
 
