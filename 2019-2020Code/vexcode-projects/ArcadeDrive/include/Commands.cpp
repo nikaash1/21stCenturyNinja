@@ -11,6 +11,8 @@ double turnSpeed = 1;
 double straightSpeed = 0.92;
 double hSpeed = 1;
 double mechSpeed = 1;
+double inchConvertVal = 28.5;
+double degreeConvertVal = 1;
 double autoCol;
 double autoPos;
 
@@ -33,8 +35,7 @@ double autoPos;
 //int autoCol = 0;
 //int autoNum = 0;
 
-//functions
-
+//get joystick values
 double getAnalog(int axis){
   if (axis  == 1){
     return Controller1.Axis1.value();
@@ -54,190 +55,12 @@ double getAnalog(int axis){
 
 }
 
-void wait (int time){
+//task sleep shortcut (wait1Msec())
+void wait(int time){
     vex::task::sleep(time);
 }
 
-void stopall(int time){
-    vex::task::sleep(time);
-    Lwheel.stop();
-    Rwheel.stop();
-    Lwheel2.stop();
-    Rwheel2.stop();
-    
-}
-
-void baseBrakeHold (int time){
-    vex::task::sleep(time);
-    Lwheel.stop(vex::brakeType::hold);
-    Lwheel2.stop(vex::brakeType::hold);
-    Rwheel.stop(vex::brakeType::hold);
-    Rwheel2.stop(vex::brakeType::hold);
-}
-
-void baseBrakeCoast (int time){
-    vex::task::sleep(time);
-    Lwheel.stop(vex::brakeType::coast);
-    Lwheel2.stop(vex::brakeType::coast);
-    Rwheel.stop(vex::brakeType::coast);
-    Rwheel2.stop(vex::brakeType::coast);
-}
-
-
-void govolt(float direction, float speed, float time){
-    
-    LB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
-    LF.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);
-    RB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
-    RF.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);
-    wait(time);
-    
-}
-
-
-void setDriveRight(double speed){
-    
-    RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-    RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-
-    
-}
-
-void setDriveLeft(double speed){
-    
-    LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-    LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-   
-    
-}
-
-void setDriveH(double speed){
-
-  MH.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-
-}
-
-void strafeMech(double speed){
-  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-  LF.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);
-  RB.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);  
-  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-}
-
-void setDriveStraight(double speed){
-
-  RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-  LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
-
-}
-
-void setDrive(double leftspeed, double rightspeed){
-
-  RB.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);  
-  RF.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);
-  LB.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);  
-  LF.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);
-
-}
-
-
-void driveStraightEncoders(int direction, double speed, double degrees){
-
-  Lwheel.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
-  Lwheel2.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
-  Rwheel.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
-  Rwheel2.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
-
-  /*Lwheel.stop();
-  Lwheel2.stop();
-  Rwheel.stop();
-  Rwheel2.stop();*/
-
-}
-
-void stopDriveLeft(){
-
-  //wait(time);
-  LB.stop(brakeType::hold);
-  LF.stop(brakeType::hold);
-
-}
-
-void stopDriveRight(){
-
-  //wait(time);
-  RB.stop(brakeType::hold);
-  RF.stop(brakeType::hold);
-
-}
-
-void stopDriveH(){
-
-  //wait(time);
-  MH.stop(brakeType::hold);
-
-}
-
-void stopDriveFull(double time){
-
-  wait(time);
-  stopDriveLeft();
-  stopDriveRight();
-  stopDriveH();
-
-}
-
-void stopDrive(int time){
-
-  wait(time);
-  stopDriveLeft();
-  stopDriveRight();
-  
-}
-
-
-void spinEncoder(int direction, double speed, double degrees){
-  
-  while(abs(getSensorPos())<abs(degrees)){
-    RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
-    RF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
-    LB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
-    LF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
-  }
-
-  Lwheel.stop();
-  Lwheel2.stop();
-  Rwheel.stop();
-  Rwheel2.stop();
-
-}
-
-void straightPID(int direction, double speed, double degrees){
-
-  double inches = degrees*28.5;
-  double speed2;
-  //error = 1;
-  while ((getSensorPos()) < abs(inches)){
-    speed2 = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
-    setDriveStraight(direction*speed2*speed);
-  }
-
-  /*while((Rwheel.isSpinning())||(Lwheel.isSpinning())){
-    wait(1);
-  }*/
-
-  //stopDrive(0);
- 
-}
-
-void turnPID(){
-
-
-
-}
-
+//artificial yield example
 void yieldaction(int time){
   int i = 0;
   while (i < time){
@@ -248,63 +71,166 @@ void yieldaction(int time){
   i = 0;
 }
 
-void intakespin(double speed, double direction){
 
+//DRIVE COMMANDS
+
+//stops drive
+void stopall(int time){
+    vex::task::sleep(time);
+    Lwheel.stop();
+    Rwheel.stop();
+    Lwheel2.stop();
+    Rwheel2.stop();
+    
+}
+//activates brake type hold
+void baseBrakeHold (int time){
+    vex::task::sleep(time);
+    Lwheel.stop(vex::brakeType::hold);
+    Lwheel2.stop(vex::brakeType::hold);
+    Rwheel.stop(vex::brakeType::hold);
+    Rwheel2.stop(vex::brakeType::hold);
+}
+//sets base motors to coast
+void baseBrakeCoast (int time){
+    vex::task::sleep(time);
+    Lwheel.stop(vex::brakeType::coast);
+    Lwheel2.stop(vex::brakeType::coast);
+    Rwheel.stop(vex::brakeType::coast);
+    Rwheel2.stop(vex::brakeType::coast);
+}
+//go straight using voltage (-12 to 12)
+void govolt(float direction, float speed, float time){
+    LB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
+    LF.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);
+    RB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
+    RF.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);
+    wait(time);
+}
+
+//USER CONTROL DRIVE COMMANDS
+//right side of drive voltage (-100 to 100)
+void setDriveRight(double speed){ 
+    RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+    RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+//left side of drive voltage (-100 to 100)
+void setDriveLeft(double speed){
+    LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+    LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+}
+//runs center H wheel with voltage assuming H-Drive (-100 to 100)
+void setDriveH(double speed){
+  MH.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+}
+//use with mechanum drive to strafe voltage (-100 to 100)
+void strafeMech(double speed){
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);
+  RB.spin(vex::directionType::fwd, -1*0.12*speed, vex::voltageUnits::volt);  
+  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+}
+//drive straight voltage (-100 to 100)
+void setDriveStraight(double speed){
+  RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+}
+//set each side of drive voltage (-100 to 100)
+void setDrive(double leftspeed, double rightspeed){
+  RB.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);  
+  RF.spin(vex::directionType::fwd, 0.12*rightspeed, vex::voltageUnits::volt);
+  LB.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, 0.12*leftspeed, vex::voltageUnits::volt);
+}
+
+
+//OTHER DRIVE COMMANDS
+//this section needs to be cleaned up
+
+void driveStraightEncoders(int direction, double speed, double degrees){
+  Lwheel.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
+  Lwheel2.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
+  Rwheel.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
+  Rwheel2.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::rpm);
+  /*Lwheel.stop();
+  Lwheel2.stop();
+  Rwheel.stop();
+  Rwheel2.stop();*/
+}
+void stopDriveLeft(){
+  LB.stop(brakeType::hold);
+  LF.stop(brakeType::hold);
+}
+void stopDriveRight(){
+  RB.stop(brakeType::hold);
+  RF.stop(brakeType::hold);
+}
+void stopDriveH(){
+  MH.stop(brakeType::hold);
+}
+void stopDriveFull(double time){
+  wait(time);
+  stopDriveLeft();
+  stopDriveRight();
+  stopDriveH();
+}
+void stopDrive(int time){
+  wait(time);
+  stopDriveLeft();
+  stopDriveRight();
+}
+void spinEncoder(int direction, double speed, double degrees){
+  while(abs(getSensorPos())<abs(degrees)){
+    RB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
+    RF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
+    LB.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);  
+    LF.spin(vex::directionType::fwd, direction*0.12*speed, vex::voltageUnits::volt);
+  }
+  Lwheel.stop();
+  Lwheel2.stop();
+  Rwheel.stop();
+  Rwheel2.stop();
+}
+
+
+//PID COMMANDS
+//go straight with PID
+void straightPID(int direction, double speed, double degrees){
+  double inches = degrees*inchConvertVal;
+  double motorSpeed;
+  while ((getSensorPos()) < abs(inches)){
+    motorSpeed = calculatePID(2, 1, 0.01, 0.2*inches, 0.8*inches, 1, inches);
+    setDriveStraight(direction*motorSpeed*speed);
+  }
+}
+//turn with PID
+void turnPID(int direction, double speed, double degrees){
+  double turnDegrees = degrees*degreeConvertVal;
+  double motorSpeed;
+  while ((getSensorPos())<abs(turnDegrees)){
+    motorSpeed = motorSpeed = calculatePID(2, 1, 0.01, 0.2*turnDegrees, 0.8*turnDegrees, 1, turnDegrees);
+    setDrive(speed*direction*motorSpeed,speed*direction*motorSpeed*-1);
+  }
+
+}
+
+
+
+
+//OTHER SUBSYSTEMS
+
+void intakeSpin(double direction, double speed){
   Intake.spin(vex::directionType::fwd, direction*speed, vex::velocityUnits::rpm);
+}
 
+void intakeStop(){
+  Intake.stop();
 }
 
 
-/*double PLoop(double d1, double d2, double d3, double speed){
-  double sensorPos = getSensorPos();
-  error = (d1+d2+d3) - sensorPos;
-  //speed2 = speed1;
-  if (sensorPos <= d1){
-    double x = (sensorPos+10)/d1;
-    double setspeed = speed*x;
-    speed1 = setspeed;
-    return 5;
-  }
-
-  if ((sensorPos > d1)&&(sensorPos <= d1+d2)){
-    double setspeed = speed;
-    speed1 = setspeed;
-    return 5;
-  }
-
-  if ((sensorPos > d1+d2)){
-    double y = 1 - (sensorPos-(d1+d2));
-    double setspeed = speed*y;
-    speed1 = setspeed;
-    return 5;
-  }
-
-  else{
-    return 5;
-  }
-
-else{
-  return 0;
-}
- 
-
-}*/
-
-/*void runP(double d1, double d2, double d3, double speed){
-
-  
-  do{
-    PLoop(d1, d2, d3, speed);
-  }
-  while (getSensorPos()< (d1+d2+d3));
-
-}
-
-void goP(){
-  spinEncoder(1, PLoop(400,200,400,50), 1000);
-  Brain.Screen.print(speed1);
-  //spinEncoder(1, 200, 600);
-}*/
+//AUTO INIT COMMANDS
 
 //this will be the input for color argument within runAuto function (this is probably a lie)
 void autoColorSelect(){
@@ -342,7 +268,7 @@ int autoPositionReturn(){
 }
 
 
-//AUTONOMOUS COMMAND
+//auto selection
 void runAuto(int autoColor, int autoNumber, bool running){
   if (running){
   //red

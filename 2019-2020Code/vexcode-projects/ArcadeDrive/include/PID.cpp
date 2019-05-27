@@ -8,14 +8,16 @@ using namespace std;
 
 
 
-double error;
+/*double error;
 double desiredValue;
 double pVal;
 double iVal;
 double dVal;
 double driveSensorPosition;
 double sensorVelocity;
+*/
 
+double globalDesiredValue;
 
 
 
@@ -39,15 +41,15 @@ double ILimit (double input1, double floor, double ceiling){
 double calculatePID(double kP, double kI, double kD, double minErrorI, double maxErrorI, double maxPowerI, double desiredValue/*double acceptableError, double acceptableVelocity*/){
 
   double error = 0;
-  //desiredValue = 0;
+  globalDesiredValue = desiredValue;
   double pVal;
-  //double iVal = 0;
-  //double dVal = 0;
+  double iVal;
+  double dVal;
 
 
 
-  driveSensorPosition = getSensorPos();
-  //double sensorVelocity = getSensorVelocity();
+  double driveSensorPosition = getSensorPos();
+  //double driveSensorVelocity = getSensorVelocity();
   error = desiredValue - driveSensorPosition;
 
   //calculate P
@@ -55,35 +57,30 @@ double calculatePID(double kP, double kI, double kD, double minErrorI, double ma
   //pVal = 200; //pVal = error
 
   //add newest I value
-  /*if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
+  iVal = 0;
+  if((abs(error)>=minErrorI)&&(abs(error)<=maxErrorI)){
     iVal += error;
   }
-
   else if (abs(error)<=minErrorI){
     iVal = 0;
-  }*/
+  }
+  //calculate I
+  double integral = ILimit(iVal*kI, -maxPowerI, maxPowerI);
 
   //calculate D
-
-
-  //dVal = (abs(sensorPosition))/sensorPosition;
-
-  long integral = ILimit(iVal*kI, -maxPowerI, maxPowerI);
-
+  dVal = (abs(driveSensorPosition))/driveSensorPosition;
 
   return (pVal*kP)+(integral)+(dVal*kD);
 
 }
 
-void incrementDesiredValue(double value){desiredValue += value;}
-void setDesiredValue(double value){desiredValue = value;}
-double getDesiredValue(){return desiredValue;}
+void incrementDesiredValue(double value){globalDesiredValue += value;}
+void setDesiredValue(double value){globalDesiredValue = value;}
+double getDesiredValue(){return globalDesiredValue;}
 
-/*double getMotorPower(){
-    return calculatePID();
-}*/
-
-
+double getMotorPower(double kP, double kI, double kD, double minErrorI, double maxErrorI, double maxPowerI, double desiredValue){
+    return calculatePID(kP, kI, kD, minErrorI, maxErrorI,maxPowerI,desiredValue);
+}
 
 
 
@@ -130,7 +127,9 @@ double getDesiredValue(){return desiredValue;}
 
 
 
-//THIRD ITERATION OF PID TO ADD LATER
+
+
+//NEWER ITERATION OF PID TO ADD LATER
 
 /*void PID(double thiskP, double thiskI, double thiskD, double thisminErrorI, 
   double thismaxErrorI, double thismaxPowerI, double thisacceptableError, double thisacceptableVelocity){
