@@ -7,14 +7,16 @@ double speed1;
 
 float stickDead = 6;
 int brakeVar = 0;
+int intakeBrakeVar = 0;
 double turnSpeed = 1;
-double straightSpeed = 0.92;
+double straightSpeed = 1;
 double hSpeed = 1;
 double mechSpeed = 1;
 double inchConvertVal = 28.5;
 double degreeConvertVal = 1;
 double autoCol;
 double autoPos;
+bool autoRunning = true;
 
 
 #define FORWARD 1
@@ -91,6 +93,10 @@ void baseBrakeHold (int time){
     Rwheel.stop(vex::brakeType::hold);
     Rwheel2.stop(vex::brakeType::hold);
 }
+void hBrakeHold (int time){
+    vex::task::sleep(time);
+    Hwheel.stop(vex::brakeType::hold);
+}
 //sets base motors to coast
 void baseBrakeCoast (int time){
     vex::task::sleep(time);
@@ -99,6 +105,15 @@ void baseBrakeCoast (int time){
     Rwheel.stop(vex::brakeType::coast);
     Rwheel2.stop(vex::brakeType::coast);
 }
+void hBrakeCoast (int time){
+    vex::task::sleep(time);
+    Hwheel.stop(vex::brakeType::coast);
+}
+void upBrake(){
+  LUp.stop(vex::brakeType::hold);
+  RUp.stop(vex::brakeType::hold);
+}
+
 //go straight using voltage (-12 to 12)
 void govolt(float direction, float speed, float time){
     LB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
@@ -114,11 +129,35 @@ void setDriveRight(double speed){
     RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
     RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
 }
+void setDriveRF(double speed){
+    RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+void setDriveRB(double speed){
+    RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
 //left side of drive voltage (-100 to 100)
 void setDriveLeft(double speed){
-    LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
-    LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);  
+  LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
 }
+void setDriveLF(double speed){
+  LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+void setDriveLB(double speed){
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+
+void setDriveBack(double speed){
+  LB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+  RB.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+
+void setDriveFront(double speed){
+  LF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+  RF.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt); 
+}
+
+
 //runs center H wheel with voltage assuming H-Drive (-100 to 100)
 void setDriveH(double speed){
   MH.spin(vex::directionType::fwd, 0.12*speed, vex::voltageUnits::volt);
@@ -215,6 +254,565 @@ void turnPID(int direction, double speed, double degrees){
   }
 
 }
+void movebase(int speed){
+    Lwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Lwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Rwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    Rwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
+    
+
+}
+
+void turnbase(int speed, int direction){
+    Lwheel.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
+    Lwheel2.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
+    Rwheel2.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+    Rwheel.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+    
+
+}
+
+void upGoL(int speed, int direction){
+  LUp.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+}
+
+void upGoR(int speed, int direction){
+  RUp.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
+}
+
+
+
+
+
+
+
+
+
+
+void upStop(){
+  RUp.stop();
+  LUp.stop();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//UP PID (Correction)
+void up(int direction, float speed){
+  //resetUp();
+  upGoL(speed, direction);
+  upGoR(speed, direction);
+  //double difference1 = 0.6*(getLUp() - getRUp());
+  //if (getLUp() > getRUp()){
+    //upGoL(200*speed - abs(difference1)*speed, direction);
+    //upGoR(200*speed, direction);
+  //}
+  //if (getRUp() > getLUp()){
+    //upGoR(200*speed - abs(difference1)*speed, direction);
+    //upGoL(200*speed, direction);
+  //}
+}
+
+/*void upCorrection(){
+  //resetUp();
+  double difference1 = 0.6*(getLUp() - getRUp());
+  while (getLUp() > getRUp()){
+    upGoR(5,FORWARD);
+    upGoR(5,FORWARD);
+  }
+  if (getRUp() > getLUp()){
+    upGoR(200*speed - abs(difference1)*speed, direction);
+    upGoL(200*speed, direction);
+  }
+}*/
+
+void RUpCorrection(){
+  upGoR(5,FORWARD);
+  upGoL(5,BACKWARD);
+}
+
+void LUpCorrection(){
+  upGoL(5,FORWARD);
+  upGoR(5,BACKWARD);
+}
+
+
+
+/*void TestUp(){
+  if ((getUp()) <= -10){
+    Brain.Screen.setFillColor(vex::color::red);
+  }
+  else{
+    Brain.Screen.setFillColor(vex::color::blue);
+  }
+    }
+
+
+void upp(int direction, float speed){
+  resetUp();
+  double error = 0 - getUp();
+  if ((getUp()) <= 10){
+    up(direction, speed);
+  }
+  else if ((getUp()) > 10){
+  }
+}
+
+void upAll(int direction, float speed, float degrees){
+ while ((abs(getUp()) <= abs(0.25*degrees))){
+    upGoL(200, direction);
+    upGoR(200, direction);
+  }
+   while ((abs(getUp()) < abs(0.75*degrees))&&(abs(getUp()) > abs(0.25*degrees))){
+    upGoL(200, direction);
+    upGoR(200, direction);
+  }
+   while ((abs(getUp()) <= abs(degrees))&&(abs(getUp()) > abs(0.75*degrees))){
+    upGoL(50, direction);
+    upGoR(50, direction);
+  }
+}*/
+
+
+
+
+
+
+
+
+
+
+
+//UP PID OLD DRIVE POSITIONING
+void upGoUp(double degrees, double speed, double wait){
+  float deg = abs(degrees);
+  float Kp = 0.2;
+  float Ki = 0.000005;
+  float Kd = 0.84;
+  int error;
+  float proportion;
+  int iraw;
+  float integral;
+  int finalerror;
+  float derivative;
+  const float iactivezone = 43;
+  int FinalPower;
+  
+  int direction;
+  if (degrees > 0){
+      direction = 1;
+  }
+  else{
+      direction = -1;
+  }
+  bool TimerBool = true;
+  if (wait < .25){
+      wait = .25;
+  }
+  resetUp();
+  TimerUp.clear();
+  while(TimerUp.time(vex::timeUnits::sec) < wait){
+    error = deg - abs((getLUp()) + (getRUp()));
+	if ((error < iactivezone) && (error != 0)){
+	  iraw = iraw + error;
+	}
+	else{
+	  iraw = 0;
+	}
+    proportion = Kp * error;
+    iraw = iraw + error;
+    integral = Ki*iraw;
+    derivative = Kd*(error - finalerror);
+    finalerror = error;
+    if (error == 0){
+        derivative = 0;
+    }
+    FinalPower = (proportion + integral + derivative)*speed*direction; //proportion + integral + derivative
+    
+    up(direction, FinalPower);
+      
+      
+    if (abs(error) < 40){
+      TimerBool = false;
+    }
+    if (TimerBool){
+      TimerUp.clear();
+        
+    }
+  }
+  LUp.stop(vex::brakeType::brake);
+  RUp.stop(vex::brakeType::brake);
+  vex::task::sleep(50);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//OLD COMMANDS
+
+void goo(int direction, int speed, float inches, int degrees2, int time){
+    
+    float degrees = 28.5*inches;
+    Lwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
+    Rwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
+    Lwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
+    Rwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
+    while (((Lwheel.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Lwheel2.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Rwheel.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Rwheel2.rotation(vex::rotationUnits::deg)) < abs(degrees2))){
+    vex::task::sleep(1);
+    }
+    
+    Lwheel.resetRotation();
+    Lwheel2.resetRotation();
+    Rwheel.resetRotation();
+    Rwheel2.resetRotation();
+    
+    //task::sleep(time);
+    //Lwheel.stop();
+    //Rwheel.stop();
+    //Lwheel2.stop();
+    //Rwheel2.stop();
+}
+
+
+
+void turnOldPID(float direction, float degrees, float speed, float wait){
+    
+    float deg = abs(degrees*2*3.5);
+    float Kp = 0.2;
+    float Ki = 0.000005;
+    float Kd = 0.84;
+    int error;
+    float proportion;
+    int iraw;
+    float integral;
+    int finalerror;
+    float derivative;
+    const float iactivezone = 43;
+    int FinalPower;
+    bool TimerBool = true;
+    if (wait < .25){
+        wait = .25;
+    }
+    Lwheel.resetRotation();
+    Rwheel.resetRotation();
+    
+    TimerDrive.clear(); 
+     while(TimerDrive.time(vex::timeUnits::sec) < wait){
+        error = deg - (Lwheel.rotation(vex::rotationUnits::deg)*-1*direction + Rwheel.rotation(vex::rotationUnits::deg)*1*direction);
+	if ((error < iactivezone) && (error != 0)){
+	    iraw = iraw + error;
+	}
+	else{
+	    iraw = 0;
+	}
+        proportion = Kp * error;
+        iraw = iraw + error;
+        integral = Ki*iraw;
+	    derivative = Kd*(error - finalerror);
+    	finalerror = error;
+        if (error == 0){
+            derivative = 0;
+    	}
+        FinalPower = (proportion + integral+derivative)*speed; //proportion + integral + derivative
+        
+        turnbase(FinalPower, direction);
+         
+        if (abs(error) < 10){
+            TimerBool = false;
+        }
+        if (TimerBool){
+            TimerDrive.clear();
+            
+        } 
+    }
+    Lwheel.stop(vex::brakeType::brake);
+    Rwheel.stop(vex::brakeType::brake);
+    Rwheel2.stop(vex::brakeType::brake);
+    Lwheel2.stop(vex::brakeType::brake);
+    vex::task::sleep(500);
+    Lwheel.stop(vex::brakeType::coast);
+    Rwheel.stop(vex::brakeType::coast);
+    Rwheel2.stop(vex::brakeType::coast);
+    Lwheel2.stop(vex::brakeType::coast);
+    
+    
+    
+    
+    
+}
+
+
+void turnsmall(float direction, float degrees, float speed, float wait){
+    float deg = abs(degrees*2*3.5);
+    float Kp = 0.2;
+    float Ki = 0.000005;
+    float Kd = 0.84;
+    int error;
+    float proportion;
+    int iraw;
+    float integral;
+    int finalerror;
+    float derivative;
+    const float iactivezone = 43;
+    int FinalPower;
+    bool TimerBool = true;
+    if (wait < .25){
+        wait = .25;
+    }
+    Lwheel.resetRotation();
+    Rwheel.resetRotation();
+    
+    
+    Brain.resetTimer(); 
+     while(Brain.timer(vex::timeUnits::sec) < wait){
+        error = deg - (Lwheel.rotation(vex::rotationUnits::deg)*-1*direction + Rwheel.rotation(vex::rotationUnits::deg)*1*direction);
+	if ((error < iactivezone) && (error != 0)){
+	    iraw = iraw + error;
+	}
+	else{
+	    iraw = 0;
+	}
+        proportion = Kp * error;
+        iraw = iraw + error;
+        integral = Ki*iraw;
+	    derivative = Kd*(error - finalerror);
+    	finalerror = error;
+        if (error == 0){
+            derivative = 0;
+    	}
+        FinalPower = (proportion + integral+derivative)*speed; //proportion + integral + derivative
+        
+        turnbase(FinalPower, direction);
+         
+         
+        if (abs(error) < 10){
+            TimerBool = false;
+        }
+        if (TimerBool){
+            Brain.resetTimer();
+            
+        } 
+    }
+    Lwheel.stop(vex::brakeType::brake);
+    Rwheel.stop(vex::brakeType::brake);
+    Rwheel2.stop(vex::brakeType::brake);
+    Lwheel2.stop(vex::brakeType::brake);
+    vex::task::sleep(500);
+    Lwheel.stop(vex::brakeType::coast);
+    Rwheel.stop(vex::brakeType::coast);
+    Rwheel2.stop(vex::brakeType::coast);
+    Lwheel2.stop(vex::brakeType::coast);
+    
+    
+}
+void goOldPID (float degrees, float speed, float wait){
+    float deg = abs(degrees*57);
+    float Kp = 0.2;
+    float Ki = 0.000005;
+    float Kd = 0.84;
+    int error;
+    float proportion;
+    int iraw;
+    float integral;
+    int finalerror;
+    float derivative;
+    const float iactivezone = 43;
+    int FinalPower;
+    
+   int direction;
+   if (degrees > 0){
+       direction = 1;
+   }
+    else{
+        direction = -1;
+    }
+    bool TimerBool = true;
+    if (wait < .25){
+        wait = .25;
+    }
+    Lwheel.resetRotation();
+    Rwheel.resetRotation();
+    
+    
+    TimerDrive.clear(); 
+     while(TimerDrive.time(vex::timeUnits::sec) < wait){
+        error = deg - abs((Lwheel.rotation(vex::rotationUnits::deg) + Rwheel.rotation(vex::rotationUnits::deg)));
+	if ((error < iactivezone) && (error != 0)){
+	    iraw = iraw + error;
+	}
+	else{
+	    iraw = 0;
+	}
+        proportion = Kp * error;
+        iraw = iraw + error;
+        integral = Ki*iraw;
+        derivative = Kd*(error - finalerror);
+        finalerror = error;
+        if (error == 0){
+            derivative = 0;
+    	  }
+        FinalPower = (proportion + integral + derivative)*speed*direction; //proportion + integral + derivative
+        
+        movebase(FinalPower);
+         
+         
+        if (abs(error) < 40){
+            TimerBool = false;
+        }
+        if (TimerBool){
+            TimerDrive.clear();
+            
+        } 
+    }
+    Lwheel.stop(vex::brakeType::brake);
+    Rwheel.stop(vex::brakeType::brake);
+    Rwheel2.stop(vex::brakeType::brake);
+    Lwheel2.stop(vex::brakeType::brake);
+    vex::task::sleep(50);
+    Lwheel.stop(vex::brakeType::coast);
+    Rwheel.stop(vex::brakeType::coast);
+    Rwheel2.stop(vex::brakeType::coast);
+    Lwheel2.stop(vex::brakeType::coast);
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -223,6 +821,14 @@ void turnPID(int direction, double speed, double degrees){
 
 void intakeSpin(double direction, double speed){
   Intake.spin(vex::directionType::fwd, direction*speed, vex::velocityUnits::rpm);
+}
+
+void intakeBrake(){
+  Intake.stop(brakeType::hold);
+}
+
+void intakeCoast(){
+  Intake.stop(brakeType::coast);
 }
 
 void intakeStop(){
@@ -270,18 +876,15 @@ int autoPositionReturn(){
 
 //auto selection
 void runAuto(int autoColor, int autoNumber, bool running){
+
   if (running){
   //red
     if (autoColor == 0){
-      
       if (autoNumber == 1){
-
-        //straightPID(1, 1, 24);
-        //goP();
-
+        goOldPID(360, 200, 0);
+        turnOldPID(RIGHT, 90, 200, 0);
       }
       if (autoNumber == 2){
-
 
       }
       if (autoNumber == 3){
@@ -294,9 +897,9 @@ void runAuto(int autoColor, int autoNumber, bool running){
 
     //blue
     if (autoColor == 1){
-      
       if (autoNumber == 1){
-
+        goOldPID(360, 200, 0);
+        turnOldPID(LEFT, 90, 200, 0);
       }
       if (autoNumber == 2){
 
@@ -308,16 +911,13 @@ void runAuto(int autoColor, int autoNumber, bool running){
 
       }
     }
-
   }
 
+  //not running (just deploy)
   else{
-
-
-
+    upGoUp(300, 1.5, 0);
+    autoRunning = false;
   }
-
-
 }
 
 

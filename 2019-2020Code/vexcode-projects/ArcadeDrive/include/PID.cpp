@@ -19,7 +19,19 @@ double sensorVelocity;
 
 double globalDesiredValue;
 
-
+double getLUp(){
+  return (LUp.rotation(rotationUnits::deg));
+}
+double getRUp(){
+  return (RUp.rotation(rotationUnits::deg));
+}
+double getUp(){
+  return ((RUp.rotation(rotationUnits::deg))+(LUp.rotation(rotationUnits::deg)))/2;
+}
+void resetUp(){
+  RUp.resetRotation();
+  LUp.resetRotation();
+}
 
 
 double getSensorPos(){
@@ -182,3 +194,28 @@ double calculateP(){
   return pVal*kP+ILimit(iVal*kI, -maxPowerI, maxPowerI)+dVal*kD;
 
 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

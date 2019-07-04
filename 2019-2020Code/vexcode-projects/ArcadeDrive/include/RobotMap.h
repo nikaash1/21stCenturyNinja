@@ -13,14 +13,16 @@
 
 vex::brain Brain;
 vex::controller Controller1 = vex::controller();
-
-vex::motor Lwheel2 = vex::motor(vex::PORT10);
-vex::motor Lwheel = vex::motor(vex::PORT16);
-vex::motor Rwheel2 = vex::motor(vex::PORT5,true);
-vex::motor Rwheel = vex::motor(vex::PORT15,true);
-vex::motor Hwheel = vex::motor(vex::PORT17);
-vex::motor Intake = vex::motor(vex::PORT12);
-
+vex::timer TimerDrive = vex::timer();
+vex::timer TimerUp = vex::timer();
+vex::motor Lwheel2 = vex::motor(vex::PORT9);
+vex::motor Lwheel = vex::motor(vex::PORT10);
+vex::motor Rwheel2 = vex::motor(vex::PORT2,true);
+vex::motor Rwheel = vex::motor(vex::PORT1,true);
+vex::motor Hwheel = vex::motor(vex::PORT11);
+vex::motor Intake = vex::motor(vex::PORT20);
+vex::motor LUp = vex::motor(vex::PORT18,true);
+vex::motor RUp = vex::motor(vex::PORT19);
 
 
 //class for running direct voltage
@@ -49,10 +51,10 @@ using namespace vex;
 
 
 //motor configuration for the ones that should be able to run voltage
-motor_special RF(vex::PORT15);
-motor_special RB(vex::PORT5);
-motor_special LF(vex::PORT16);
-motor_special LB(vex::PORT10);
-motor_special MH(vex::PORT13);
+motor_special RF(vex::PORT1);
+motor_special RB(vex::PORT2);
+motor_special LF(vex::PORT10);
+motor_special LB(vex::PORT9);
+motor_special MH(vex::PORT11);
 
 

@@ -225,11 +225,11 @@ void go (float degrees, float speed, float wait){
         proportion = Kp * error;
         iraw = iraw + error;
         integral = Ki*iraw;
-	    derivative = Kd*(error - finalerror);
-    	finalerror = error;
+        derivative = Kd*(error - finalerror);
+        finalerror = error;
         if (error == 0){
             derivative = 0;
-    	}
+    	  }
         FinalPower = (proportion + integral+derivative)*speed*direction; //proportion + integral + derivative
         
         movebase(FinalPower);
