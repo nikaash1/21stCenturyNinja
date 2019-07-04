@@ -244,6 +244,7 @@ void straightPID(int direction, double speed, double degrees){
     setDriveStraight(direction*motorSpeed*speed);
   }
 }
+
 //turn with PID
 void turnPID(int direction, double speed, double degrees){
   double turnDegrees = degrees*degreeConvertVal;
@@ -252,15 +253,13 @@ void turnPID(int direction, double speed, double degrees){
     motorSpeed = motorSpeed = calculatePID(2, 1, 0.01, 0.2*turnDegrees, 0.8*turnDegrees, 1, turnDegrees);
     setDrive(speed*direction*motorSpeed,speed*direction*motorSpeed*-1);
   }
-
 }
+
 void movebase(int speed){
     Lwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
     Lwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
     Rwheel2.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
     Rwheel.spin(vex::directionType::fwd,speed,vex::velocityUnits::rpm);
-    
-
 }
 
 void turnbase(int speed, int direction){
@@ -268,8 +267,6 @@ void turnbase(int speed, int direction){
     Lwheel2.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
     Rwheel2.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
     Rwheel.spin(vex::directionType::fwd,speed*1*direction,vex::velocityUnits::rpm);
-    
-
 }
 
 void upGoL(int speed, int direction){
@@ -282,16 +279,24 @@ void upGoR(int speed, int direction){
 
 
 
-
-
-
-
-
-
-
 void upStop(){
   RUp.stop();
   LUp.stop();
+}
+
+void intakeMove(int direction, double speed, double degrees){
+  Intake.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+}
+
+void stopEverything(){
+  Intake.stop(brakeType::hold);
+  RUp.stop(brakeType::hold);
+  LUp.stop(brakeType::hold);
+  MH.stop(brakeType::hold);
+  RB.stop(brakeType::hold);
+  RF.stop(brakeType::hold);
+  LB.stop(brakeType::hold);
+  LF.stop(brakeType::hold);
 }
 
 
@@ -349,7 +354,7 @@ void upStop(){
 
 
 
-//UP PID (Correction)
+//UP PID (Correction)     (not correction anymorel just Up)
 void up(int direction, float speed){
   //resetUp();
   upGoL(speed, direction);
@@ -378,7 +383,7 @@ void up(int direction, float speed){
   }
 }*/
 
-void RUpCorrection(){
+/*void RUpCorrection(){
   upGoR(5,FORWARD);
   upGoL(5,BACKWARD);
 }
@@ -386,7 +391,7 @@ void RUpCorrection(){
 void LUpCorrection(){
   upGoL(5,FORWARD);
   upGoR(5,BACKWARD);
-}
+}*/
 
 
 
@@ -533,7 +538,6 @@ void upGoUp(double degrees, double speed, double wait){
 
 
 //OLD COMMANDS
-
 void goo(int direction, int speed, float inches, int degrees2, int time){
     
     float degrees = 28.5*inches;
@@ -842,7 +846,7 @@ void intakeStop(){
 void autoColorSelect(){
   //int autoCol = 0;
     //if (Brain.Screen.pressing()){
-        if (autoCol == 0){
+        /*if (autoCol == 0){
           wait(200);
           autoCol = 1;
           Brain.Screen.drawRectangle(15, 15, 50, 50, blue);
@@ -851,7 +855,7 @@ void autoColorSelect(){
           wait(200);
           Brain.Screen.drawRectangle(15, 15, 50, 50, red);
           autoCol = 0;
-        }
+        }*/
         
       //}
   //return autoCol;
@@ -881,6 +885,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
   //red
     if (autoColor == 0){
       if (autoNumber == 1){
+        stopEverything();
         goOldPID(360, 200, 0);
         turnOldPID(RIGHT, 90, 200, 0);
       }

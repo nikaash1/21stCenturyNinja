@@ -31,7 +31,7 @@ void pre_auton( void ) {
 
 void autonomous( void ) {
   
-  runAuto(0, 1, true);
+  runAuto(RED, 1, true);
 
 }
 
