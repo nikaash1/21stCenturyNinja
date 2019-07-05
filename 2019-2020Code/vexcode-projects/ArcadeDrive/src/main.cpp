@@ -31,7 +31,13 @@ void pre_auton( void ) {
 
 void autonomous( void ) {
   
-  runAuto(RED, 1, true);
+  //runAuto(RED, 1, true);
+  //intakeMove(FORWARD, 200, 540);
+  //wait(500);
+  upGoUp(350, 1.5, 0);
+  //goOldPID(50, 1.5, 0);
+  //wait(500);
+  //goOldPID(10, 1,0);
 
 }
 
