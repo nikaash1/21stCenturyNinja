@@ -1,7 +1,7 @@
 //#include "robot-config.h"
 #include "PID.cpp"
 #include <string>
-#include <cmath>
+#include <cmath>x
 
 double speed1;
 
@@ -758,8 +758,8 @@ void turnsmall(float direction, float degrees, float speed, float wait){
     
     
 }
-void goOldPID (float degrees, float speed, float wait){
-    float deg = abs(degrees*57);
+void goOldPID (float inch, float speed, float wait){
+    float deg = abs(inch*57);
     float Kp = 0.2;
     float Ki = 0.000005;
     float Kd = 0.84;
@@ -773,7 +773,7 @@ void goOldPID (float degrees, float speed, float wait){
     int FinalPower;
     
    int direction;
-   if (degrees > 0){
+   if (deg > 0){
        direction = 1;
    }
     else{
