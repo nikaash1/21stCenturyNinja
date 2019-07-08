@@ -17,7 +17,10 @@ double degreeConvertVal = 1;
 double autoCol;
 double autoPos;
 bool autoRunning = true;
-
+bool running = true;
+double error;
+double target;
+bool targetToggle = true;
 
 #define FORWARD 1
 #define BACKWARD -1
@@ -284,8 +287,24 @@ void upStop(){
   LUp.stop();
 }
 
+void upCoast(){
+  RUp.stop(brakeType::coast);
+  LUp.stop(brakeType::coast);
+}
+
 void intakeMove(int direction, double speed, double degrees){
   Intake.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  while (Intake.isSpinning()){
+        wait(1);
+      }
+}
+
+void upMove(int direction, double speed, double degrees){
+  LUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  RUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  while (LUp.isSpinning()){
+        wait(1);
+      }
 }
 
 void stopEverything(){
@@ -301,10 +320,33 @@ void stopEverything(){
 
 
 
+//OTHER SUBSYSTEMS
+
+void intakeSpin(double direction, double speed){
+  Intake.spin(vex::directionType::fwd, direction*speed, vex::velocityUnits::rpm);
+}
+
+void intakeBrake(){
+  Intake.stop(brakeType::hold);
+}
+
+void intakeCoast(){
+  Intake.stop(brakeType::coast);
+}
+
+void intakeStop(){
+  Intake.stop();
+}
 
 
 
 
+void routine(double speed){
+  intakeMove(BACKWARD, speed, 400);
+  upMove(BACKWARD, speed, 200);
+  intakeMove(FORWARD, speed, 400);
+  upMove(FORWARD, speed, 200);
+}
 
 
 
@@ -444,8 +486,8 @@ void upAll(int direction, float speed, float degrees){
 void upGoUp(double degrees, double speed, double wait){
   float deg = abs(degrees);
   float Kp = 0.2;
-  float Ki = 0.000005;
-  float Kd = 0.84;
+  float Ki = 0;
+  float Kd = 0;
   int error;
   float proportion;
   int iraw;
@@ -466,10 +508,11 @@ void upGoUp(double degrees, double speed, double wait){
   if (wait < .25){
       wait = .25;
   }
+
   resetUp();
   TimerUp.clear();
   while(TimerUp.time(vex::timeUnits::sec) < wait){
-    error = deg - abs((getLUp()) + (getRUp()));
+    error = deg - abs((getUp()));
 	if ((error < iactivezone) && (error != 0)){
 	  iraw = iraw + error;
 	}
@@ -489,14 +532,17 @@ void upGoUp(double degrees, double speed, double wait){
     up(direction, FinalPower);
       
       
-    if (abs(error) < 40){
+    if (abs(error) < 200){
       TimerBool = false;
     }
     if (TimerBool){
       TimerUp.clear();
         
     }
+  Controller1.Screen.print(error);
+  
   }
+
   LUp.stop(vex::brakeType::brake);
   RUp.stop(vex::brakeType::brake);
   vex::task::sleep(50);
@@ -506,7 +552,26 @@ void upGoUp(double degrees, double speed, double wait){
 
 
 
+void upDriverLoop(){
+  //resetUp();
 
+  error = target - getUp();
+  double kp = 0.1;
+  error = target - getUp();
+  double finalPower = kp * error;
+  up(FORWARD, finalPower);
+  upCoast();
+  wait(10);
+
+}
+
+/*void upRoutine(){
+  //intakeBrake();
+  intakeMove(FORWARD, FAST, 100);
+  upMove(BACKWARD, FAST, 200);
+  intakeMove(BACKWARD, FAST, 100);
+  upMove(FORWARD, FAST, 200);
+}*/
 
 
 
@@ -821,23 +886,7 @@ void goOldPID (float degrees, float speed, float wait){
 
 
 
-//OTHER SUBSYSTEMS
 
-void intakeSpin(double direction, double speed){
-  Intake.spin(vex::directionType::fwd, direction*speed, vex::velocityUnits::rpm);
-}
-
-void intakeBrake(){
-  Intake.stop(brakeType::hold);
-}
-
-void intakeCoast(){
-  Intake.stop(brakeType::coast);
-}
-
-void intakeStop(){
-  Intake.stop();
-}
 
 
 //AUTO INIT COMMANDS
@@ -868,6 +917,7 @@ void autoPositionSelect(){
 
 }
 
+//Stack Auto Function
 
 int autoColorReturn(){
   return autoCol;

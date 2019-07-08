@@ -18,9 +18,9 @@ vex::timer TimerUp = vex::timer();
 vex::motor Lwheel2 = vex::motor(vex::PORT9);
 vex::motor Lwheel = vex::motor(vex::PORT10);
 vex::motor Rwheel2 = vex::motor(vex::PORT2,true);
-vex::motor Rwheel = vex::motor(vex::PORT1,true);
-vex::motor Hwheel = vex::motor(vex::PORT11);
-vex::motor Intake = vex::motor(vex::PORT20);
+vex::motor Rwheel = vex::motor(vex::PORT3,true);
+vex::motor Hwheel = vex::motor(vex::PORT12);
+vex::motor Intake = vex::motor(vex::PORT20,true);
 vex::motor LUp = vex::motor(vex::PORT18,true);
 vex::motor RUp = vex::motor(vex::PORT19);
 
@@ -51,10 +51,10 @@ using namespace vex;
 
 
 //motor configuration for the ones that should be able to run voltage
-motor_special RF(vex::PORT1);
-motor_special RB(vex::PORT2);
+motor_special RF(vex::PORT2);
+motor_special RB(vex::PORT3);
 motor_special LF(vex::PORT10);
 motor_special LB(vex::PORT9);
-motor_special MH(vex::PORT11);
+motor_special MH(vex::PORT12);
 
 

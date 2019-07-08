@@ -31,13 +31,44 @@ void pre_auton( void ) {
 
 void autonomous( void ) {
   
-  runAuto(RED, 1, true);
+  //runAuto(RED, 1, true);
+
+  intakeMove(FORWARD, FAST, 420);
+  intakeBrake();
+  intakeSpin(FORWARD, 20);
+  goOldPID(3.5, 1.5, 0);
+  upMove(FORWARD, FAST, 400);
+  goOldPID(5, 1.5, 0);
+  wait(200);
+  upMove(BACKWARD, FAST, 200);
+  routine(FAST);
+  intakeSpin(FORWARD, 20);
+  wait(50);
+  intakeBrake();
+  goOldPID(19, 1.5, 0);
+  upMove(FORWARD, FAST, 700);
+  intakeMove(BACKWARD, FAST, 420);
+  upMove(BACKWARD, FAST, 700);
+  intakeMove(FORWARD, FAST, 420);
+  upMove(FORWARD, MEDIUM, 200);
+  turnOldPID(LEFT, 120, 1.1, 0);
+  goOldPID(30, 1.2, 0);
+  upMove(BACKWARD, MEDIUM, 600);
+  intakeMove(BACKWARD, FAST, 420);
+  goOldPID(-30, 1.4, 0);
 
 }
 
 
-void usercontrol( void ) {
+void usercontrol ( void ) {
+
+  /*do{
+    upGoUp(100, 1.5, 0);
+  }
+  while (running);*/
+  
   while (1){
+    
     //Drive
     //Tank Control
     setDriveLeft((getAnalog(LEFT_AXIS_Y)));
@@ -46,9 +77,11 @@ void usercontrol( void ) {
     setDriveH(hSpeed*(((getAnalog(LEFT_AXIS_X)))+((getAnalog(RIGHT_AXIS_X)))));
 
     //Intake Control
+    
     if (Controller1.ButtonR1.pressing()){
       intakeBrakeVar = 0;
       intakeSpin(BACKWARD, FAST);
+      Controller1.Screen.print(getUp());
     }
     else if (Controller1.ButtonR2.pressing()){
       intakeBrakeVar = 1;
@@ -69,24 +102,23 @@ void usercontrol( void ) {
       }
     }
 
+    if (Controller1.ButtonB.pressing()){
+      routine(FAST);
+    }
+
+
+    
+
     //Up
-    //Up Correction
-    /*if (getRUp() < (getLUp() - 50)){
-      LUpCorrection();
-    }
-    else if (getLUp() < (getRUp() - 50)){
-      RUpCorrection();
-    }*/
-    //Up Control
-    if (Controller1.ButtonL1.pressing()){
-      up(FORWARD, 200);
-    }
-    else if (Controller1.ButtonL2.pressing()){
-      up(BACKWARD, 200);
-    }
-    else{
-      upBrake();
-    }
+      if (Controller1.ButtonL1.pressing()){
+        up(FORWARD, 200);
+      }
+      else if (Controller1.ButtonL2.pressing()){
+        up(BACKWARD, 150);
+      }
+      else{
+        upBrake();
+      }
 
     //Brake Toggle Control
     if ((Controller1.ButtonY.pressing())&&(brakeVar == 0)){
@@ -110,6 +142,8 @@ int main() {
   Competition.autonomous( autonomous );
   Competition.drivercontrol( usercontrol );
   while (true){
+
+    
     if (Brain.Screen.pressing()){
       autoColorSelect();
       wait(300);
