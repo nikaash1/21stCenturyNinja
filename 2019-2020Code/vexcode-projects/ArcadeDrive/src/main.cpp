@@ -32,6 +32,7 @@ void pre_auton( void ) {
 void autonomous( void ) {
   
   //runAuto(RED, 1, true);
+<<<<<<< HEAD
 
   intakeMove(FORWARD, FAST, 420);
   intakeBrake();
@@ -56,6 +57,14 @@ void autonomous( void ) {
   upMove(BACKWARD, MEDIUM, 600);
   intakeMove(BACKWARD, FAST, 420);
   goOldPID(-30, 1.4, 0);
+=======
+  //intakeMove(FORWARD, 200, 540);
+  //wait(500);
+  upGoUp(350, 1.5, 0);
+  //goOldPID(50, 1.5, 0);
+  //wait(500);
+  //goOldPID(10, 1,0);
+>>>>>>> b8616d10f61e4547aedac3056afd991f96edf3e5
 
 }
 
