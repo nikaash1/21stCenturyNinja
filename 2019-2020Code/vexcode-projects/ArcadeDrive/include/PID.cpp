@@ -28,9 +28,15 @@ double getRUp(){
 double getUp(){
   return ((RUp.rotation(rotationUnits::deg))+(LUp.rotation(rotationUnits::deg)))/2;
 }
+double getIntake(){
+  return (Intake.rotation(rotationUnits::deg));
+}
 void resetUp(){
   RUp.resetRotation();
   LUp.resetRotation();
+}
+void resetIntake(){
+  Intake.resetRotation();
 }
 
 

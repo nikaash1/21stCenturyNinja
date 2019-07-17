@@ -1,7 +1,7 @@
 //#include "robot-config.h"
 #include "PID.cpp"
 #include <string>
-#include <cmath>x
+#include <cmath>
 
 double speed1;
 
@@ -13,7 +13,7 @@ double straightSpeed = 1;
 double hSpeed = 1;
 double mechSpeed = 1;
 double inchConvertVal = 28.5;
-double degreeConvertVal = 1;
+double degreeConvertVal = 7;
 double autoCol;
 double autoPos;
 bool autoRunning = true;
@@ -21,7 +21,8 @@ bool running = true;
 double error;
 double target;
 bool targetToggle = true;
-
+int routineVar;
+int bigboyx;
 #define FORWARD 1
 #define BACKWARD -1
 #define REVERSE -1
@@ -37,6 +38,8 @@ bool targetToggle = true;
 #define LEFT_AXIS_Y 3
 #define RIGHT_AXIS_X 1
 #define LEFT_AXIS_X 4
+#define RIGHTH 1
+#define LEFTH -1
 //int autoCol = 0;
 //int autoNum = 0;
 
@@ -124,6 +127,10 @@ void govolt(float direction, float speed, float time){
     RB.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);  
     RF.spin(vex::directionType::fwd, speed*direction, vex::voltageUnits::volt);
     wait(time);
+    LB.stop();
+    LF.stop();
+    RB.stop();
+    RF.stop();
 }
 
 //USER CONTROL DRIVE COMMANDS
@@ -295,16 +302,47 @@ void upCoast(){
 void intakeMove(int direction, double speed, double degrees){
   Intake.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
   while (Intake.isSpinning()){
-        wait(1);
-      }
+    wait(1);
+  }
 }
+
+void intakeMove2(int direction, double speed, double degrees){
+  Intake.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  wait (10);
+  while ((Intake.isSpinning())&&(bigboyx == 0)){
+    Controller1.Screen.print(Intake.velocity(pct));
+    if (abs(Intake.velocity(pct)) < 50){
+      Intake.stop();
+      Controller1.Screen.print("bigboy");
+      bigboyx = 1;
+      
+    }
+    wait(1);
+  }
+}
+
+void intakeMove3(int direction, double speed, double degrees){
+  resetIntake();
+  while (abs(getIntake()) < abs(degrees)){
+    Intake.spin(vex::directionType::fwd,speed*-1*direction,vex::velocityUnits::rpm);
+    if (Controller1.ButtonA.pressing()){
+      degrees = 0;
+    }
+  }
+}
+
 
 void upMove(int direction, double speed, double degrees){
   LUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
   RUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
   while (LUp.isSpinning()){
-        wait(1);
-      }
+    wait(1);
+  }
+}
+
+void upMove2(int direction, double speed, double degrees){
+  LUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  RUp.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
 }
 
 void stopEverything(){
@@ -338,14 +376,36 @@ void intakeStop(){
   Intake.stop();
 }
 
-
+void routineVarChange1(){
+  routineVar = 1;
+}
+void routineVarChange0(){
+  routineVar = 0;
+}
 
 
 void routine(double speed){
   intakeMove(BACKWARD, speed, 400);
-  upMove(BACKWARD, speed, 200);
+  upMove(BACKWARD, speed, 270);
   intakeMove(FORWARD, speed, 400);
-  upMove(FORWARD, speed, 200);
+  intakeSpin(FORWARD, 75);
+  upMove(FORWARD, speed, 300);
+  intakeSpin(FORWARD, 20);
+}
+
+
+void routineDriver(){
+  routineVar = 0;
+  
+  intakeMove(BACKWARD, 200, 400);
+  upMove(BACKWARD, 200, 200);
+  intakeMove(FORWARD, 200, 400);
+  upMove(FORWARD, 200, 200);
+
+}
+
+void wait1(){
+  wait(1);
 }
 
 
@@ -377,14 +437,48 @@ void routine(double speed){
 
 
 
+void goEncoder(double direction, double speed, double deg){
+  double degrees = deg*28.5;
+  LF.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  LB.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  RF.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  RB.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  while ((LF.isSpinning())){
+    wait(1);
+  }
+}
+
+void goH(double direction, double speed, double deg){
+  double degrees = deg*28.5;
+  MH.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  while ((MH.isSpinning())){
+    wait(1);
+  }
+}
 
 
+void goSides(double lDirection, double rDirection, double lSpeed, double rSpeed, double ledeg, double rideg){
+  double lDegrees = ledeg*28.5;
+  double rDegrees = rideg*28.5;
+  LF.startRotateFor(lDirection*lDegrees, rotationUnits::deg, lDirection*lSpeed, velocityUnits::pct);
+  LB.startRotateFor(lDirection*lDegrees, rotationUnits::deg, lDirection*lSpeed, velocityUnits::pct);
+  RF.startRotateFor(rDirection*rDegrees, rotationUnits::deg, rDirection*rSpeed, velocityUnits::pct);
+  RB.startRotateFor(rDirection*rDegrees, rotationUnits::deg, rDirection*rSpeed, velocityUnits::pct);
+  while ((LF.isSpinning())||(RF.isSpinning())){
+    wait(1);
+  }
+}
 
-
-
-
-
-
+void turnEncoder(double direction, double speed, double deg){
+  double degrees = deg*3.5;
+  LF.startRotateFor(-1*direction*degrees, rotationUnits::deg, -1*direction*speed, velocityUnits::pct);
+  LB.startRotateFor(-1*direction*degrees, rotationUnits::deg, -1*direction*speed, velocityUnits::pct);
+  RF.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  RB.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
+  while ((LF.isSpinning())||(LF.isSpinning())){
+    wait(1);
+  }
+}
 
 
 
@@ -603,13 +697,14 @@ void upDriverLoop(){
 
 
 //OLD COMMANDS
-void goo(int direction, int speed, float inches, int degrees2, int time){
+void goo(int direction, double speed, double inches, double deg2, double time){
     
     float degrees = 28.5*inches;
-    Lwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
-    Rwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
-    Lwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
-    Rwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::rpm);
+    double degrees2 = 28.5*deg2;
+    Lwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::pct);
+    Rwheel.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::pct);
+    Lwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::pct);
+    Rwheel2.startRotateFor(direction*degrees, vex::rotationUnits::deg,direction*speed,vex::velocityUnits::pct);
     while (((Lwheel.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Lwheel2.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Rwheel.rotation(vex::rotationUnits::deg)) < abs(degrees2))&&((Rwheel2.rotation(vex::rotationUnits::deg)) < abs(degrees2))){
     vex::task::sleep(1);
     }
@@ -618,12 +713,7 @@ void goo(int direction, int speed, float inches, int degrees2, int time){
     Lwheel2.resetRotation();
     Rwheel.resetRotation();
     Rwheel2.resetRotation();
-    
-    //task::sleep(time);
-    //Lwheel.stop();
-    //Rwheel.stop();
-    //Lwheel2.stop();
-    //Rwheel2.stop();
+
 }
 
 
@@ -631,7 +721,7 @@ void goo(int direction, int speed, float inches, int degrees2, int time){
 void turnOldPID(float direction, float degrees, float speed, float wait){
     
     float deg = abs(degrees*2*3.5);
-    float Kp = 0.2;
+    float Kp = 0.1;
     float Ki = 0.000005;
     float Kd = 0.84;
     int error;
@@ -758,9 +848,9 @@ void turnsmall(float direction, float degrees, float speed, float wait){
     
     
 }
-void goOldPID (float inch, float speed, float wait){
+void goOldPID (float inch, float speed, double kp, double errorVal, float wait){
     float deg = abs(inch*57);
-    float Kp = 0.2;
+    float Kp = kp;
     float Ki = 0.000005;
     float Kd = 0.84;
     int error;
@@ -780,9 +870,9 @@ void goOldPID (float inch, float speed, float wait){
         direction = -1;
     }
     bool TimerBool = true;
-    if (wait < .25){
+    /*if (wait < .25){
         wait = .25;
-    }
+    }*/
     Lwheel.resetRotation();
     Rwheel.resetRotation();
     
@@ -809,7 +899,7 @@ void goOldPID (float inch, float speed, float wait){
         movebase(FinalPower);
          
          
-        if (abs(error) < 40){
+        if (abs(error) < errorVal){
             TimerBool = false;
         }
         if (TimerBool){
@@ -934,27 +1024,248 @@ void runAuto(int autoColor, int autoNumber, bool running){
   if (running){
   //red
     if (autoColor == 0){
+      //front
       if (autoNumber == 1){
+        //cube 1
+        intakeMove(FORWARD, FAST, 350);
+        intakeBrake();
+        intakeSpin(FORWARD, 70);
+        //cube 2
+        //goOldPID(4.3, 1.5, 0.15, 40, 0.25);
+        //goEncoder(FORWARD, 30, 4.3);
+        goo(FORWARD, 20, 10.3, 3.5, 0);
+        upMove(FORWARD, FAST, 400);
+        //goOldPID(6, 1.3, 0.2, 40, 0.25);
+        //wait(200);
+        upMove(BACKWARD, FAST, 200);
+        intakeMove(BACKWARD, FAST, 90);
+        routine(FAST);
+        intakeSpin(FORWARD, 50);
+        //wait(50);
+        //intakeBrake();
+        //cube 3-6
+        upMove2(FORWARD, FAST, 710);
+        goOldPID(21.25, 1, 0.105, 80, 0.05);
+        upMove(BACKWARD, FAST, 100);
+        intakeMove(BACKWARD, FAST, 470);
+        upMove(BACKWARD, 90, 760);
+        goSides(FORWARD, FORWARD, 30, 30, 1.5, 1.5);
+        intakeMove(FORWARD, FAST, 470);
+        intakeSpin(FORWARD, 70);
+        //wait(50);
+        //intakeBrake();
+        upMove(FORWARD, 70, 300);
+        //score
+        wait(200);
+        turnEncoder(LEFT, 32, 142);
+        //goOldPID(52, 1.1, 0.1, 80, 0.05);
+        goo(FORWARD, 50, 46, 35, 0);
+        //goH(LEFTH, 100, 3);
+        while(RF.isSpinning()){
+          wait(1);
+        }
+        //goSides(FORWARD, BACKWARD, 60, 0, 10, 0);
+        //turnEncoder(LEFT, 30, 20);
+        //goSides(BACKWARD, BACKWARD, 70, 50, 10, 4);
+        wait(600);
+        //goSides(FORWARD, FORWARD, 30, 6, 16, 4);
+        upMove(BACKWARD, 70, 130);
+        intakeMove(BACKWARD, FAST, 530);
+        upMove(FORWARD, 30, 100);
+        goOldPID(-4, -1.3, 0.15, 40, 0.25);
         stopEverything();
-        goOldPID(360, 200, 0);
-        turnOldPID(RIGHT, 90, 200, 0);
       }
+      //back
       if (autoNumber == 2){
-
+        intakeMove(FORWARD, FAST, 420);
+        intakeBrake();
+        intakeSpin(FORWARD, 20);
+        goOldPID(3.5, 1.5, 0.2, 40, 0);
+        upMove(FORWARD, FAST, 400);
+        goOldPID(5, 1.5, 0.2, 40, 0);
+        wait(200);
+        upMove(BACKWARD, FAST, 200);
+        routine(FAST);
+        intakeSpin(FORWARD, 20);
+        wait(50);
+        intakeBrake();
+        goOldPID(5, 1.5, 0.2, 40, 0);
+        routine(FAST);
+        intakeSpin(FORWARD, 20);
+        wait(50);
+        intakeBrake();
+        goOldPID(5, 1.5, 0.2, 40, 0);
+        routine(FAST);
+        intakeSpin(FORWARD, 20);
+        wait(50);
+        intakeBrake();
+        goOldPID(5, 1.5, 0.2, 40, 0);
+        routine(FAST);
+        intakeSpin(FORWARD, 20);
+        wait(50);
+        intakeBrake();
       }
+      }
+      //skills
       if (autoNumber == 3){
+        //cube 1
+        intakeMove(FORWARD, FAST, 350);
+        intakeBrake();
+        intakeSpin(FORWARD, 70);
+        //cube 2
+        //goOldPID(4.3, 1.5, 0.15, 40, 0.25);
+        //goEncoder(FORWARD, 30, 4.3);
+        goo(FORWARD, 20, 10.3, 3.5, 0);
+        upMove(FORWARD, FAST, 400);
+        //goOldPID(6, 1.3, 0.2, 40, 0.25);
+        //wait(200);
+        upMove(BACKWARD, FAST, 200);
+        intakeMove(BACKWARD, FAST, 90);
+        routine(FAST);
+        intakeSpin(FORWARD, 50);
+        //wait(50);
+        //intakeBrake();
+        //cube 3-6
+        upMove2(FORWARD, FAST, 710);
+        goOldPID(21.25, 1, 0.105, 80, 0.05);
+        upMove(BACKWARD, FAST, 100);
+        intakeMove(BACKWARD, FAST, 470);
+        upMove(BACKWARD, 90, 760);
+        goSides(FORWARD, FORWARD, 30, 30, 1.5, 1.5);
+        intakeMove(FORWARD, FAST, 470);
+        intakeSpin(FORWARD, 70);
+        //wait(50);
+        //intakeBrake();
+        upMove(FORWARD, 70, 300);
+        //score
+        wait(200);
+        turnEncoder(LEFT, 32, 142);
+        //goOldPID(52, 1.1, 0.1, 80, 0.05);
+        goo(FORWARD, 50, 46, 35, 0);
+        //goH(LEFTH, 100, 3);
+        while(LF.isSpinning()){
+          wait(1);
+        }
+        //goSides(FORWARD, BACKWARD, 60, 0, 10, 0);
+        //turnEncoder(LEFT, 30, 20);
+        //goSides(BACKWARD, BACKWARD, 70, 50, 10, 4);
+        wait(300);
+        //goSides(FORWARD, FORWARD, 30, 6, 16, 4);
+        upMove(BACKWARD, 70, 130);
+        intakeMove(BACKWARD, FAST, 530);
+        upMove(FORWARD, 30, 100);
+        goOldPID(-10, -1.3, 0.15, 40, 0.25);
+        upMove(BACKWARD, 90, 400);
+        
+      
+        //reset against wall
+        //goOldPID(-5, -1.2,  0.11, 40, 0.25);
+        goSides(FORWARD, BACKWARD, 20, 70, 5, 27);
+        govolt(BACKWARD, MEDIUM, 1000);
+        //tower1
+        goH(RIGHTH, 100, 5);
+        upMove(BACKWARD, 75, 70);
+        goOldPID(45, 1.2,  0.15, 40, 0.25);
+        intakeMove(FORWARD, FAST, 450);
+        intakeSpin(FORWARD, 50);
+        goOldPID(-5, -1.2,  0.11, 40, 0.25);
+        upMove(FORWARD, 70, 850);
+        goOldPID(8, 1.2,  0.11, 40, 0.05);
+        upMove(BACKWARD, 60, 50);
+        intakeMove(BACKWARD, FAST, 100);
+        upMove(FORWARD, 60, 50);
+        goOldPID(-8, -1.2,  0.11, 40, 0.25);
+        upMove(BACKWARD, 70, 850);
+        intakeMove(BACKWARD, FAST, 250);
+        //tower 2
+        goH(RIGHTH, 100, 77);
+        goOldPID(6, 1.2,  0.11, 40, 0.25);
+        intakeMove(FORWARD, FAST, 450);
+        intakeSpin(FORWARD, 50);
+        goOldPID(-5, -1.3,  0.11, 40, 0.25);
+        upMove(FORWARD, 70, 1300);
+        goOldPID(8, 1.2,  0.11, 40, 0.05);
+        upMove(BACKWARD, 60, 50);
+        intakeMove(BACKWARD, FAST, 100);
+        upMove(FORWARD, 60, 50);
+        goOldPID(-5, -1.2,  0.11, 40, 0.25);
+        upMove(BACKWARD, 70, 1190);
+        intakeMove(BACKWARD, FAST, 250);
+        //tower 3
+        goH(RIGHTH, 100, 78);
+        goOldPID(5, 1.1,  0.11, 40, 0.25);
+        intakeMove(FORWARD, FAST, 450);
+        intakeSpin(FORWARD, 50);
+        goOldPID(-5, -1.5,  0.2, 40, 0.25);
+        upMove(FORWARD, 70, 850);
+        goOldPID(5, 1.2,  0.11, 40, 0.05);
+        upMove(BACKWARD, 60, 50);
+        intakeMove(BACKWARD, FAST, 100);
+        upMove(FORWARD, 60, 50);
+        goOldPID(-5, -1.2,  0.11, 40, 0.25);
+        upMove(BACKWARD, 70, 850);
+        goH(RIGHTH, 100, 76);
+        stopEverything();
 
       }
       if (autoNumber == 4){
-
+        goOldPID(10, 200, 0.2, 40, 0);
+        intakeSpin(FORWARD, 20);
+        goOldPID(10000, 200, 0.2, 40, 0);
       }
-    }
+    
 
     //blue
     if (autoColor == 1){
       if (autoNumber == 1){
-        goOldPID(360, 200, 0);
-        turnOldPID(LEFT, 90, 200, 0);
+        //cube 1
+        intakeMove(FORWARD, FAST, 350);
+        intakeBrake();
+        intakeSpin(FORWARD, 70);
+        //cube 2
+        //goOldPID(4.3, 1.5, 0.15, 40, 0.25);
+        //goEncoder(FORWARD, 30, 4.3);
+        goo(FORWARD, 20, 10.3, 3.5, 0);
+        upMove(FORWARD, FAST, 400);
+        //goOldPID(6, 1.3, 0.2, 40, 0.25);
+        //wait(200);
+        upMove(BACKWARD, FAST, 200);
+        intakeMove(BACKWARD, FAST, 90);
+        routine(FAST);
+        intakeSpin(FORWARD, 50);
+        //wait(50);
+        //intakeBrake();
+        //cube 3-6
+        upMove2(FORWARD, FAST, 710);
+        goOldPID(21.25, 1, 0.105, 80, 0.05);
+        upMove(BACKWARD, FAST, 100);
+        intakeMove(BACKWARD, FAST, 470);
+        upMove(BACKWARD, 90, 760);
+        goSides(FORWARD, FORWARD, 30, 30, 1.5, 1.5);
+        intakeMove(FORWARD, FAST, 470);
+        intakeSpin(FORWARD, 70);
+        //wait(50);
+        //intakeBrake();
+        upMove(FORWARD, 70, 300);
+        //score
+        wait(200);
+        turnEncoder(RIGHT, 32, 132);
+        //goOldPID(52, 1.1, 0.1, 80, 0.05);
+        goo(FORWARD, 50, 46, 35, 0);
+        //goH(LEFTH, 100, 3);
+        while(LF.isSpinning()){
+          wait(1);
+        }
+        //goSides(FORWARD, BACKWARD, 60, 0, 10, 0);
+        //turnEncoder(LEFT, 30, 20);
+        //goSides(BACKWARD, BACKWARD, 70, 50, 10, 4);
+        wait(300);
+        //goSides(FORWARD, FORWARD, 30, 6, 16, 4);
+        upMove(BACKWARD, 70, 130);
+        intakeMove(BACKWARD, FAST, 530);
+        upMove(FORWARD, 30, 100);
+        goOldPID(-4, -1.3, 0.15, 40, 0.25);
+        stopEverything();
       }
       if (autoNumber == 2){
 

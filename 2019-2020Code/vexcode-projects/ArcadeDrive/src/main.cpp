@@ -19,6 +19,9 @@ using namespace std;
 #define RIGHT -1
 #define RED 0
 #define BLUE 1
+#define FRONT 1
+#define BACK 2
+#define SKILLS 3
 #define RIGHT_AXIS_Y 2
 #define LEFT_AXIS_Y 3
 #define RIGHT_AXIS_X 1
@@ -30,52 +33,11 @@ void pre_auton( void ) {
 
 
 void autonomous( void ) {
-  
-  //runAuto(RED, 1, true);
-<<<<<<< HEAD
-
-  intakeMove(FORWARD, FAST, 420);
-  intakeBrake();
-  intakeSpin(FORWARD, 20);
-  goOldPID(3.5, 1.5, 0);
-  upMove(FORWARD, FAST, 400);
-  goOldPID(5, 1.5, 0);
-  wait(200);
-  upMove(BACKWARD, FAST, 200);
-  routine(FAST);
-  intakeSpin(FORWARD, 20);
-  wait(50);
-  intakeBrake();
-  goOldPID(19, 1.5, 0);
-  upMove(FORWARD, FAST, 700);
-  intakeMove(BACKWARD, FAST, 420);
-  upMove(BACKWARD, FAST, 700);
-  intakeMove(FORWARD, FAST, 420);
-  upMove(FORWARD, MEDIUM, 200);
-  turnOldPID(LEFT, 120, 1.1, 0);
-  goOldPID(30, 1.2, 0);
-  upMove(BACKWARD, MEDIUM, 600);
-  intakeMove(BACKWARD, FAST, 420);
-  goOldPID(-30, 1.4, 0);
-=======
-  //intakeMove(FORWARD, 200, 540);
-  //wait(500);
-  upGoUp(350, 1.5, 0);
-  //goOldPID(50, 1.5, 0);
-  //wait(500);
-  //goOldPID(10, 1,0);
->>>>>>> b8616d10f61e4547aedac3056afd991f96edf3e5
-
+  runAuto(RED, FRONT, true);
 }
 
 
 void usercontrol ( void ) {
-
-  /*do{
-    upGoUp(100, 1.5, 0);
-  }
-  while (running);*/
-  
   while (1){
     
     //Drive
@@ -111,9 +73,14 @@ void usercontrol ( void ) {
       }
     }
 
-    if (Controller1.ButtonB.pressing()){
-      routine(FAST);
-    }
+    /*if (Controller1.ButtonB.pressing()){
+      routineDriver();
+    }*/
+
+    
+
+    //Controller1.ButtonB.pressed(routineDriver);
+    //Controller1.ButtonA.pressed(wait1);
 
 
     

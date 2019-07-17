@@ -21,8 +21,9 @@ vex::motor Rwheel2 = vex::motor(vex::PORT2,true);
 vex::motor Rwheel = vex::motor(vex::PORT3,true);
 vex::motor Hwheel = vex::motor(vex::PORT12);
 vex::motor Intake = vex::motor(vex::PORT20,true);
-vex::motor LUp = vex::motor(vex::PORT18,true);
-vex::motor RUp = vex::motor(vex::PORT19);
+vex::motor LUp = vex::motor(vex::PORT15,true);
+//19 blown
+vex::motor RUp = vex::motor(vex::PORT16);
 
 
 //class for running direct voltage
