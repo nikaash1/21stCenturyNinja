@@ -1074,10 +1074,10 @@ void runAuto(int autoColor, int autoNumber, bool running){
         wait(200);
         //cube 7
         //goOldPID(5, 1, 0.105, 80, 0.05);
-        turnEncoder(LEFT, 38, 132);
+        turnEncoder(LEFT, 38, 137);
 
-        goo(FORWARD, 50, 46, 35, 0);
-        goH(LEFTH, 80, 7);
+        goo(FORWARD, 50, 46, 30, 0);
+        goH(LEFTH, 80, 8);
         while(RF.isSpinning()){
           wait(1);
         }
@@ -1091,6 +1091,60 @@ void runAuto(int autoColor, int autoNumber, bool running){
       }
       if (autoNumber == 2){ 
       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       if (autoNumber == 3){
          //front
         //cube 1
@@ -1120,9 +1174,9 @@ void runAuto(int autoColor, int autoNumber, bool running){
         wait(200);
         //cube 7
         goOldPID(3, 1, 0.105, 80, 0.05);
-        turnEncoder(LEFT, 35, 132);
-        goo(FORWARD, 50, 46, 35, 0);
-        goH(LEFTH, 80, 7);
+        turnEncoder(LEFT, 35, 147);
+        goo(FORWARD, 50, 46, 13, 0);
+        goH(LEFTH, 80, 9);
         while(RF.isSpinning()){
           wait(1);
         }

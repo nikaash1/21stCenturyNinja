@@ -35,7 +35,7 @@ void pre_auton( void ) {
 
 
 void autonomous( void ) {
-  runAuto(RED, SKILLS, true);
+  runAuto(RED, FRONT, true);
 }
 
 
