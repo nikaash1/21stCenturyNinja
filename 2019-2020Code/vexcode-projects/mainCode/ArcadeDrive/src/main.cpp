@@ -35,7 +35,7 @@ void pre_auton( void ) {
 
 
 void autonomous( void ) {
-  runAuto(BLUE, FRONT, true);
+  runAuto(RED, SKILLS, true);
 }
 
 
@@ -131,7 +131,7 @@ int main() {
     }
 
 
-    Controller1.Screen.clearLine();
+    //Controller1.Screen.clearLine();
     Controller1.Screen.print(autoColorReturn());
     //vibrate when a motor is too hot
     if (RF.temperature(vex::percentUnits::pct) >= 70){
