@@ -1064,7 +1064,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
         //cube 3-6
         upMove2(FORWARD, FAST, 710);
         goOldPID(21.25, 1, 0.105, 80, 0.05);
-        upMove(BACKWARD, FAST, 100);
+        upMove(BACKWARD, FAST, 140);
         intakeMove(BACKWARD, FAST, 470);
         upMove(BACKWARD, 90, 760);
         goSides(FORWARD, FORWARD, 30, 30, 1.5, 1.5);
@@ -1074,10 +1074,10 @@ void runAuto(int autoColor, int autoNumber, bool running){
         wait(200);
         //cube 7
         //goOldPID(5, 1, 0.105, 80, 0.05);
-        turnEncoder(LEFT, 38, 137);
+        turnEncoder(LEFT, 38, 139);
 
-        goo(FORWARD, 50, 46, 30, 0);
-        goH(LEFTH, 80, 8);
+        goo(FORWARD, 53, 49, 25, 0);
+        goH(LEFTH, 80, 6);
         while(RF.isSpinning()){
           wait(1);
         }
