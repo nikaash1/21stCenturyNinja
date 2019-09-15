@@ -493,7 +493,7 @@ void turnEncoder(double direction, double speed, double deg){
   LB.startRotateFor(-1*direction*degrees, rotationUnits::deg, -1*direction*speed, velocityUnits::pct);
   RF.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
   RB.startRotateFor(direction*degrees, rotationUnits::deg, direction*speed, velocityUnits::pct);
-  while ((LF.isSpinning())||(LF.isSpinning())){
+  while ((LF.isSpinning())||(RF.isSpinning())){
     wait(1);
   }
 }
@@ -1052,7 +1052,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
         intakeBrake();
         intakeSpin(FORWARD, 70);
         //cube 2
-        goo(FORWARD, 20, 13.3, 4.5, 0);
+        goo(FORWARD, 20, 13.1, 4.5, 0);
         upMove(FORWARD, FAST, 400);
         upMove(BACKWARD, FAST, 200);
         while (RF.isSpinning()){
@@ -1063,7 +1063,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
         intakeSpin(FORWARD, 50);
         //cube 3-6
         upMove2(FORWARD, FAST, 710);
-        goOldPID(21.25, 1, 0.105, 80, 0.05);
+        goOldPID(10.75, 1, 0.105, 80, 0.05);
         upMove(BACKWARD, FAST, 140);
         intakeMove(BACKWARD, FAST, 470);
         upMove(BACKWARD, 90, 760);
@@ -1074,9 +1074,9 @@ void runAuto(int autoColor, int autoNumber, bool running){
         wait(200);
         //cube 7
         //goOldPID(5, 1, 0.105, 80, 0.05);
-        turnEncoder(LEFT, 38, 139);
+        turnEncoder(LEFT, 38, 195);
 
-        goo(FORWARD, 53, 49, 25, 0);
+        goo(FORWARD, 38, 49, 25, 0);
         goH(LEFTH, 80, 6);
         while(RF.isSpinning()){
           wait(1);
@@ -1163,7 +1163,7 @@ void runAuto(int autoColor, int autoNumber, bool running){
         intakeSpin(FORWARD, 50);
         //cube 3-6
         upMove2(FORWARD, FAST, 710);
-        goOldPID(21.25, 1, 0.105, 80, 0.05);
+        goOldPID(15.25, 1, 0.105, 80, 0.05);
         upMove(BACKWARD, FAST, 100);
         intakeMove(BACKWARD, FAST, 470);
         upMove(BACKWARD, 90, 760);
