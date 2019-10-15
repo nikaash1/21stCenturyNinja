@@ -21,6 +21,8 @@
 #include "DriveControl.h"
 #include "DriveCommands.h"
 #include "UserControl.h"
+#include "AlignerControl.h"
+#include "AlignerCommands.h"
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \

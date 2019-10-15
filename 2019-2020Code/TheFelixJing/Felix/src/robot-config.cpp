@@ -13,6 +13,7 @@ motor FLWheel = motor(PORT1, ratio18_1, false);
 motor FRWheel = motor(PORT2, ratio18_1, false);
 motor BLWheel = motor(PORT3, ratio18_1, true);
 motor BRWheel = motor(PORT4, ratio18_1, true);
+motor Aligner = motor(PORT5, ratio6_1, false);
 
 // VEXcode generated functions
 

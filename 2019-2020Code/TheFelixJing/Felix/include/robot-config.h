@@ -8,6 +8,7 @@ extern motor FLWheel;
 extern motor FRWheel;
 extern motor BLWheel;
 extern motor BRWheel;
+extern motor Aligner;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
