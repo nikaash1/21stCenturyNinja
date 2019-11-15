@@ -20,7 +20,7 @@ vex::motor Lwheel = vex::motor(vex::PORT10);
 vex::motor Rwheel2 = vex::motor(vex::PORT2,true)  ;
 vex::motor Rwheel = vex::motor(vex::PORT3,true);
 vex::motor Hwheel = vex::motor(vex::PORT7);
-vex::motor Intake = vex::motor(vex::PORT6,true);
+vex::motor Intake = vex::motor(vex::PORT15,true);
 vex::motor LUp = vex::motor(vex::PORT13,true);
 vex::motor RUp = vex::motor(vex::PORT14);
 

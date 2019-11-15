@@ -9,6 +9,9 @@ extern motor FRWheel;
 extern motor BLWheel;
 extern motor BRWheel;
 extern motor Aligner;
+extern motor RUp;
+extern motor LUp;
+extern motor Intake;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
