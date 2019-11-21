@@ -76,3 +76,6 @@ using namespace std;
 //drive
 #define LEFT 1
 #define RIGHT -1
+#define FORWARD 1
+#define BACKWARD -1
+#define REVERSE -1

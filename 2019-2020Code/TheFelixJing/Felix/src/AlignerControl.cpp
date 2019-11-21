@@ -6,7 +6,7 @@ void alignerButton(){
 }
 int alignerControls(){
   while(1){
-    if ((getController(BTNA)) == 1){
+    if ((getController(BTNRIGHT)) == 1){
       if (alignerToggle == 0){
         alignerToggle = 1;
         align(ALIGN, 100);

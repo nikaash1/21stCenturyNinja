@@ -35,6 +35,20 @@ double getDrive(){
   return rot;
 }
 
+//get heat of drive motors
+double getHeatFL(){
+  return FLWheel.temperature(pct);
+}
+double getHeatFR(){
+  return FLWheel.temperature(pct);
+}
+double getHeatBL(){
+  return FLWheel.temperature(pct);
+}
+double getHeatBR(){
+  return FLWheel.temperature(pct);
+}
+
 //set each side of drive (voltage)
 void setDrive(double lSpeed, double rSpeed){
   FLWheel.spin(fwd, 0.12*lSpeed, volt);
@@ -49,6 +63,33 @@ void setDriveFull(double flSpeed, double blSpeed, double frSpeed, double brSpeed
   BLWheel.spin(fwd, 0.12*blSpeed, volt);
   FRWheel.spin(fwd, 0.12*frSpeed, volt);
   BRWheel.spin(fwd, 0.12*brSpeed, volt);
+}
+
+int driveEncoder(int dir, double speed, double dist){
+  double inches = dist*20.34;
+  FLWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  FRWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  BLWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  BRWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  return 0;
+}
+
+int turnEncoder(int dir, double speed, double dist){
+  double deg = dist*3.75;
+  FLWheel.startRotateFor(-1*deg*dir, rotationUnits::deg, -1*speed*dir, velocityUnits::pct);
+  FRWheel.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  BLWheel.startRotateFor(-1*deg*dir, rotationUnits::deg, -1*speed*dir, velocityUnits::pct);
+  BRWheel.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  return 0;
+}
+
+int strafeEncoder(int dir, double speed, double dist){
+  double inches = dist*20.34;
+  FLWheel.startRotateFor(-1*inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  FRWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  BLWheel.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  BRWheel.startRotateFor(-1*inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  return 0;
 }
 
 //individual motor speeds (voltage)

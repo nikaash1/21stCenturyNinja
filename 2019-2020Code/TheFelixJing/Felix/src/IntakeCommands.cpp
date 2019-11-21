@@ -2,7 +2,7 @@
 using namespace vex;
 
 void intake(int dir, int speed){
-  Intake.spin(fwd, 0.12*speed, volt);
+  Intake.spin(fwd, 0.12*speed*dir, volt);
 }
 
 void intakeEncoderWait(int dir, int speed, int dist){
@@ -20,6 +20,6 @@ void intakeCoast(){
 }
 
 void dropCube(){
-  intakeEncoderWait(OPEN, 100, 10);
-  intakeEncoderWait(CLOSE, 100, 10);
+  intakeEncoderWait(OPEN, 100, 25);
+  intakeEncoderWait(CLOSE, 100, 25);
 }

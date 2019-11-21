@@ -15,3 +15,10 @@ void upCoast(){
   RUp.stop(coast);
   LUp.stop(coast);
 }
+
+int liftEncoder(int dir, double speed, double dist){
+  double inches = dist*28.38;
+  LUp.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  RUp.startRotateFor(inches*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  return 0;
+}

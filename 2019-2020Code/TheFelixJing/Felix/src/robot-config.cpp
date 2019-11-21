@@ -14,8 +14,8 @@ motor FRWheel = motor(PORT10, ratio18_1, true);
 motor BLWheel = motor(PORT11, ratio18_1, false);
 motor BRWheel = motor(PORT20, ratio18_1, true);
 motor Aligner = motor(PORT16, ratio36_1, true);
-motor RUp = motor(PORT14, ratio36_1, false);
-motor LUp = motor(PORT13, ratio36_1, true);
+motor RUp = motor(PORT14, ratio36_1, true);
+motor LUp = motor(PORT13, ratio36_1, false);
 motor Intake = motor(PORT15, ratio36_1, true);
 
 // VEXcode generated functions

@@ -31,6 +31,13 @@ void driveControls(int style, int driveType){
   }
 }
 
+int driveFelix(){
+  while ((getController(BTNB)) == 0){
+    driveControls(XDRIVE, TANK);
+  }
+  return 0;
+}
+
 int brakeControls(){
   while (1){
     if ((getController(BTNY)) == 1){
@@ -44,6 +51,15 @@ int brakeControls(){
         driveCoast();
         brakeVar = 0;
       }
+    }
+  }
+  return 0;
+}
+
+int driveBackControl(){
+  while(1){
+    if ((getController(BTNB)) == 1){
+      driveEncoder(BACKWARD, 60, 10);
     }
   }
   return 0;
