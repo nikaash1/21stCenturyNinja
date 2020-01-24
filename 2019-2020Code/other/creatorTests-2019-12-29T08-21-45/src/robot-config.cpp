@@ -8,15 +8,7 @@ using code = vision::code;
 brain  Brain;
 
 // VEXcode device constructors
-controller Controller = controller(primary);
-motor FLWheel = motor(PORT1, ratio18_1, false);
-motor FRWheel = motor(PORT10, ratio18_1, true);
-motor BLWheel = motor(PORT11, ratio18_1, false);
-motor BRWheel = motor(PORT20, ratio18_1, true);
-motor Aligner = motor(PORT16, ratio36_1, true);
-motor LUp = motor(PORT14, ratio36_1, true);
-motor RUp = motor(PORT13, ratio36_1, false);
-motor Intake = motor(PORT15, ratio36_1, false);
+inertial Inertial21 = inertial(PORT21);
 
 // VEXcode generated functions
 
