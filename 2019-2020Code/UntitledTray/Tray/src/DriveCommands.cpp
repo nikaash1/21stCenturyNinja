@@ -135,6 +135,13 @@ void driveCoast(){
   BRWheel.stop(coast);
 }
 
+//drive time
+void driveTime(int dir, double speed, double timeVal){
+  setDrive(speed*dir, speed*dir);
+  wait(timeVal, msec);
+  driveBrake();
+}
+
 //drive encoder commands
 void driveStraight(int dir, double speed, double dist){
   while (abs(getDrive()) < dist){
@@ -152,13 +159,32 @@ void driveStrafe(int dir, double speed, double dist){
   }
 }
 
+void swing(double speedL, double speedR, double distL, double distR){
+  while ((abs(getDriveL()) < distL) || (abs(getDriveR()) < distR)){
+    setDrive(speedL, speedR);
+  }
+  driveBrake();
+}
+
+void swingEncoder(double speedL, double speedR, double distL, double distR){
+  double inchesL = distL*inchesConversion;
+  double inchesR = distL*inchesConversion;
+  FLWheel.startRotateFor(inchesL, rotationUnits::deg, speedL, velocityUnits::pct);
+  FRWheel.startRotateFor(inchesR, rotationUnits::deg, speedR, velocityUnits::pct);
+  BLWheel.startRotateFor(inchesL, rotationUnits::deg, speedL, velocityUnits::pct);
+  BRWheel.startRotateFor(inchesR, rotationUnits::deg, speedR, velocityUnits::pct);
+  while ((FLWheel.isSpinning())||(FRWheel.isSpinning())){
+    wait(1, msec);
+  }
+}
+
 int goP(int dir, double speed, double dist, double maxError){
   driveReset();
   double speedP = speed/100;
   double deg = dist*inchesConversion;
   double maxErrorInch = maxError*inchesConversion;
   double kP = 0.2;
-  while (abs(getDrive()) < deg -maxErrorInch){
+  while (abs(getDrive()) < deg - maxErrorInch){
     double error = deg - abs(getDrive());
     double pVal = kP*error*speedP;
     setDrive(pVal*dir, pVal*dir);
@@ -171,11 +197,61 @@ int turnP(int dir, double speed, double dist, double maxError){
   double speedP = speed/100;
   double deg = dist*degConversion;
   double maxErrorDeg = maxError*degConversion;
-  double kP = 0.2;
+  double kP = 0.5;
   while ((abs(getDriveL()) < deg - maxErrorDeg) || (abs(getDriveR()) < deg - maxErrorDeg)){
     double error = ((deg - abs(getDriveL())) + (deg - abs(getDriveR())))/2;
     double pVal = kP*error*speedP;
     setDrive(-1*pVal*dir, pVal*dir);
   }
+  return 0;
+}
+
+int swingP(double speedL, double speedR, double distL, double distR, double maxErrorL, double maxErrorR){
+  driveReset();
+  double speedPL = speedL/100;
+  double speedPR = speedR/100;
+  double degL = distL*inchesConversion;
+  double degR = distR*inchesConversion;
+  double maxErrorInchL = maxErrorL*inchesConversion;
+  double maxErrorInchR = maxErrorR*inchesConversion;
+  double kP = 0.2;
+  while ((abs(getDriveL()) < degL - maxErrorInchL) || (abs(getDriveR()) < degR - maxErrorInchR)){
+    double errorL = degL - abs(getDriveL());
+    double errorR = degR - abs(getDriveR());
+    double pValL = kP*errorL*speedPL;
+    double pValR = kP*errorR*speedPR;
+    setDrive(pValL, pValR);
+  }
+  driveBrake();
+  return 0;
+}
+
+int goPStop(int dir, double speed, double dist, double maxError){
+  driveReset();
+  double speedP = speed/100;
+  double deg = dist*inchesConversion;
+  double maxErrorInch = maxError*inchesConversion;
+  double kP = 0.2;
+  while (abs(getDrive()) < deg - maxErrorInch){
+    double error = deg - abs(getDrive());
+    double pVal = kP*error*speedP;
+    setDrive(pVal*dir, pVal*dir);
+  }
+  driveBrake();
+  return 0;
+}
+
+int turnPStop(int dir, double speed, double dist, double maxError){
+  driveReset();
+  double speedP = speed/100;
+  double deg = dist*degConversion;
+  double maxErrorDeg = maxError*degConversion;
+  double kP = 0.5;
+  while ((abs(getDriveL()) < deg - maxErrorDeg) || (abs(getDriveR()) < deg - maxErrorDeg)){
+    double error = ((deg - abs(getDriveL())) + (deg - abs(getDriveR())))/2;
+    double pVal = kP*error*speedP;
+    setDrive(-1*pVal*dir, pVal*dir);
+  }
+  driveBrake();
   return 0;
 }

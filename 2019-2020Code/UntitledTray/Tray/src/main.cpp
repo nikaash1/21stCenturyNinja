@@ -8,15 +8,11 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  //runAuto(autoVarReturn());
-  runAuto(1);
+  runAuto(RED_LARGE);
 }
 
 void usercontrol(void) {
   runDriverTasks();
-  while(1){
-    wait(20, msec);
-  }
 }
 
 int main() {

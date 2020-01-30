@@ -3,6 +3,7 @@ using namespace vex;
 
 int intakeControls(){
   double intakeSpeed = 1;
+  double intakeSpeed2 = 1;
   int intakeToggle = 0;
   while (1){
     if (getController(BTNDOWN)){
@@ -18,6 +19,12 @@ int intakeControls(){
         intakeToggle = 0;
       }
     }
+    if ((Arm.rotation(rotationUnits::deg) <= 70)){ //outtake with arms until 200 degrees
+      intakeSpeed2 = 1;
+    }
+    else{
+      intakeSpeed2 = 0;
+    }
     if (getController(BTNR1)){
       intake(OUT, 100*intakeSpeed);
     }
@@ -26,6 +33,9 @@ int intakeControls(){
     }
     else if (getController(BTNA)){
       intake(OUT, (getJoystick(RIGHT_AXIS_Y) + getJoystick(LEFT_AXIS_Y))/2);
+    }
+    else if (getController(BTNL1)){ //outtake with arms
+      intake(OUT, 100*intakeSpeed2);
     }
     else{
       intakeBrake();

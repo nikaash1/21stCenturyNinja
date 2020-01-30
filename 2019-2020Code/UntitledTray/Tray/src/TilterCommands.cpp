@@ -34,7 +34,7 @@ void trayEncoder(int dir, double speed, double dist){
 
 int trayP(int speed, double dist){
   while (abs(getTilter()) < dist){
-    double error = 650 - Tilter.rotation(rotationUnits::deg);
+    double error = 730 - Tilter.rotation(rotationUnits::deg);
     double traySpeed = 0.002*error;
     tray(TILT, 100*traySpeed*speed);
   }
