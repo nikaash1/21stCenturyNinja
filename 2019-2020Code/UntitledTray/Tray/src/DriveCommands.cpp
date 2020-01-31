@@ -83,11 +83,12 @@ int driveEncoder(int dir, double speed, double dist){
   while (FLWheel.isSpinning()){
     wait(1, msec);
   }
+  driveBrake();
   return 0;
 }
 
 int turnEncoder(int dir, double speed, double dist){
-  double deg = dist*3.75;
+  double deg = dist*degConversion;
   FLWheel.startRotateFor(-1*deg*dir, rotationUnits::deg, -1*speed*dir, velocityUnits::pct);
   FRWheel.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
   BLWheel.startRotateFor(-1*deg*dir, rotationUnits::deg, -1*speed*dir, velocityUnits::pct);
@@ -95,6 +96,7 @@ int turnEncoder(int dir, double speed, double dist){
   while (FLWheel.isSpinning()){
     wait(1, msec);
   }
+  driveBrake();
   return 0;
 }
 
