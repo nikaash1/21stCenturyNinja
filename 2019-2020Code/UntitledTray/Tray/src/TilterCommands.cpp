@@ -47,3 +47,12 @@ void trayTime(int dir, int speed,  double waitTime){
   wait(waitTime, msec);
   trayBrake();
 }
+
+int getTrayLimit(){
+  if (TrayLimit.pressing()){
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}

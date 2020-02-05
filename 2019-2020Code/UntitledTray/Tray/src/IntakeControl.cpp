@@ -6,6 +6,13 @@ int intakeControls(){
   double intakeSpeed2 = 1;
   int intakeToggle = 0;
   while (1){
+    if (getController(BTNLEFT)){ //reset button
+      while (getController(BTNLEFT)){
+        wait(1, msec);
+      }
+      RIntake.resetRotation();
+      LIntake.resetRotation();
+    }
     if (getController(BTNDOWN)){
       while (getController(BTNDOWN)){
         wait(1, msec);
@@ -19,7 +26,7 @@ int intakeControls(){
         intakeToggle = 0;
       }
     }
-    if ((Arm.rotation(rotationUnits::deg) <= 70)){ //outtake with arms until 200 degrees
+    if ((Arm.rotation(rotationUnits::deg) <= 70)||((abs(getIntake()) <= 200))){
       intakeSpeed2 = 1;
     }
     else{

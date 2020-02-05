@@ -3,7 +3,7 @@ void deploy();
 void runAutoTester();
 void runAutoTesterBlue();
 void runAutoPID();
-void runAutoenc();
+void runAutoEnc();
 void runAuto10Test();
 void runAuto10Small();
 void runAuto(int autoNumber);

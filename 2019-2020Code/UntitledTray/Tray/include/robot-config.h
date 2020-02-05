@@ -11,5 +11,6 @@ extern motor Arm;
 extern motor RIntake;
 extern motor LIntake;
 extern inertial Inertia;
-
+extern limit TrayLimit;
+extern limit ArmLimit;
 void  vexcodeInit( void );

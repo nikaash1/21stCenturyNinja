@@ -18,4 +18,12 @@ void intakeCoast(){
 void intakeControlled(int dir, double speed, double deg){
   RIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
   LIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  while((RIntake.isSpinning())||(RIntake.isSpinning())){
+    wait(1, msec);
+  }
+}
+
+double getIntake(){
+  double intakeVal = (RIntake.position(rotationUnits::deg)+RIntake.position(rotationUnits::deg))/2;
+  return intakeVal;
 }

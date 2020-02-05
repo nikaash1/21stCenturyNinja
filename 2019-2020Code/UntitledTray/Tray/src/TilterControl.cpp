@@ -26,9 +26,12 @@ int tilterControls(){
       }
       Tilter.resetRotation();
     }
+    if (getTrayLimit()){ //reset switch
+      Tilter.resetRotation();
+    }
     if (Tilter.rotation(rotationUnits::deg) >= 20){ //trayP
-      double error = 720 - Tilter.rotation(rotationUnits::deg);
-      traySpeed = 0.0022*error;
+      double error = 820 - Tilter.rotation(rotationUnits::deg);
+      traySpeed = 0.002*error;
     }
     else{
       traySpeed = 1; //tray speed is 1 unless it is past 70 degreese

@@ -20,3 +20,12 @@ int armEncoder(int dir, double speed, double height){
   }
   return 0;
 }
+
+int getArmLimit(){
+  if (TrayLimit.pressing()){
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}

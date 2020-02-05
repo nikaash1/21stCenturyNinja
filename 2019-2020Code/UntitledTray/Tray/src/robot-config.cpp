@@ -16,9 +16,11 @@ motor BRWheel = motor(PORT20, ratio18_1, false);
 motor Tilter = motor(PORT18, ratio36_1, true);
 motor Arm = motor(PORT3, ratio36_1, false);
 motor RIntake = motor(PORT10, ratio36_1, true);
-motor LIntake = motor(PORT4, ratio36_1, false);
+motor LIntake = motor(PORT5, ratio36_1, false);
 //sensors
 inertial Inertia = inertial(PORT21);
+limit TrayLimit = limit(Brain.ThreeWirePort.H);
+limit ArmLimit = limit(Brain.ThreeWirePort.G);
 
 void vexcodeInit( void ) {
 }
