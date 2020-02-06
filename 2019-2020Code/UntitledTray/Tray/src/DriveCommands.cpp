@@ -183,14 +183,14 @@ void swingEncoder(double speedL, double speedR, double distL, double distR){
 int goP(int dir, double speed, double dist, double speedCut){
   driveReset();
   double speedP = speed/100;
-  double deg = dist*inchesConversion;
+  double targetVal = dist*inchesConversion;
   double speedCutInches = speedCut*inchesConversion;
   double kP = 0.2;
   double error = 1;
   double pVal = speed;
-  while (abs(getDrive()) < deg){
+  while (abs(getDrive()) < targetVal){
     if (abs(getDrive()) <= speedCutInches){
-      error = deg - abs(getDrive());
+      error = targetVal - abs(getDrive());
       pVal = kP*error*speedP;
     }
     setDrive(pVal*dir, pVal*dir);
@@ -202,14 +202,14 @@ int goP(int dir, double speed, double dist, double speedCut){
 int turnP(int dir, double speed, double dist, double speedCut){
   driveReset();
   double speedP = speed/100;
-  double deg = dist*degConversion;
+  double targetVal = dist*degConversion;
   double speedCutDeg = speedCut*degConversion;
   double kP = 1;
   double error = 1;
   double pVal = speed;
-  while ((abs(getDriveL()) < deg) || (abs(getDriveR()) < deg)){
+  while ((abs(getDriveL()) < targetVal) && (abs(getDriveR()) < targetVal)){
     if ((abs(getDriveL()) < speedCutDeg) || (abs(getDriveR()) < speedCutDeg)){
-      error = ((deg - abs(getDriveL())) + (deg - abs(getDriveR())))/2;
+      error = ((targetVal - abs(getDriveL())) + (targetVal - abs(getDriveR())))/2;
       pVal = kP*error*speedP;
     }
     setDrive(-1*pVal*dir, pVal*dir);

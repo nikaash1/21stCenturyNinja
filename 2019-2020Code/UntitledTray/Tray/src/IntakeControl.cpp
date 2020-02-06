@@ -26,7 +26,7 @@ int intakeControls(){
         intakeToggle = 0;
       }
     }
-    if ((Arm.rotation(rotationUnits::deg) <= 70)||((abs(getIntake()) <= 200))){
+    if ((Arm.rotation(rotationUnits::deg) <= 70)||((abs(getIntake()) <= 10))){
       intakeSpeed2 = 1;
     }
     else{

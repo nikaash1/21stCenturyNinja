@@ -32,49 +32,49 @@ void test(){
 void runAutoTester(){
   //deploy
   driveEncoder(FORWARD, 100, 2);
-  driveTime(BACKWARD, 60, 100);
+  driveTime(BACKWARD, 60, 250);
   armEncoder(UP, 100, 150);
   armGo(DOWN, 100);
   tray(UNTILT, 15);
   intake(IN, 100);
   //wait(100, msec);
   //first 5 cubes
-  goP(FORWARD, 60, 34, 20);
+  goP(FORWARD, 60, 30, 20);
+  wait(200, msec);
   armGo(DOWN, 20);
   wait(300, msec);
   trayTime(TILT, 30, 75);
   trayBrake();
-  armEncoder(UP, 100, 90);
+  armEncoder(UP, 100, 80);
   goP(FORWARD, 150, 8, 3);
   armGo(DOWN, 100);
   goP(FORWARD, 120, 12, 6);
   armCoast();
   armBrake();
   //back up
-  goP(BACKWARD, 150, 12, 7);
-  turnP(LEFT, 80, 35, 20);
-  goP(BACKWARD, 70, 27, 20);
-  driveEncoder(BACKWARD, 70, 27);
+  goP(BACKWARD, 170, 12, 7);
+  turnP(LEFT, 120, 75, 60);
+  goP(BACKWARD, 130, 30, 26);
   //align with cubes 6-9
   wait(200, msec);
-  turnP(RIGHT, 100, 45, 37);
-  turnEncoder(RIGHT, 100, 45);
+  turnP(RIGHT, 130, 49, 38);
   intake(IN, 100);
   //last 4 cubes
-  goP(FORWARD, 45, 8, 4);
-  turnP(LEFT, 100, 7, 3);
-  goP(FORWARD, 25, 29, 23);
+  goP(FORWARD, 280, 10, 7);
+  turnP(LEFT, 200, 17, 8);
+  goP(FORWARD, 80, 34, 28);
   //align with zone
-  goP(BACKWARD, 100, 20, 13);
+  goP(BACKWARD, 200, 20, 15);
   wait(100, msec);
-  turnP(RIGHT, 70, 120, 90);
+  turnP(RIGHT, 120, 100, 90);
+  wait(100, msec);
   intakeBrake();
   //place stack
-  goP(FORWARD, 100, 12, 7);
+  goP(FORWARD, 150, 19, 12);
   armGo(DOWN, 40);
   wait(300, msec);
   intake(OUT, 20);
-  trayP(60, 550);
+  trayP(70, 700);
   intake(OUT, 40);
   goP(BACKWARD, 25, 40, 40);
   driveEncoder(BACKWARD, 25, 40);

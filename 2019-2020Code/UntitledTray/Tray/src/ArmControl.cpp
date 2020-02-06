@@ -14,7 +14,7 @@ int towerMode(){
       Arm.resetRotation();
     }*/
     if (getController(BTNL1)){
-      armGo(UP, 5);
+      armGo(UP, 100);
     }
     else if (getController(BTNL2)){
       armGo(DOWN, 100);
