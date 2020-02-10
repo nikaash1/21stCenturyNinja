@@ -144,6 +144,12 @@ void driveTime(int dir, double speed, double timeVal){
   driveBrake();
 }
 
+void setDriveTime(double speedL, double speedR, double timeVal){
+  setDrive(speedL, speedR);
+  wait(timeVal, msec);
+  driveBrake();
+}
+
 //drive encoder commands
 void driveStraight(int dir, double speed, double dist){
   while (abs(getDrive()) < dist){
@@ -180,35 +186,42 @@ void swingEncoder(double speedL, double speedR, double distL, double distR){
   }
 }
 
-int goP(int dir, double speed, double dist, double speedCut){
+int goP(int dir, double speed, double dist, double speedStart, double speedCut){
   driveReset();
   double speedP = speed/100;
   double targetVal = dist*inchesConversion;
+  double speedStartInches = speedStart*inchesConversion;
   double speedCutInches = speedCut*inchesConversion;
-  double kP = 0.2;
+  double kP = 100/targetVal;
+  double kP2 = 8;
   double error = 1;
+  double driftError = 1;
   double pVal = speed;
+  double finalPower = speed;
   while (abs(getDrive()) < targetVal){
-    if (abs(getDrive()) <= speedCutInches){
+    if ((abs(getDrive()) <= speedCutInches) && (abs(getDrive()) > speedStartInches)){
       error = targetVal - abs(getDrive());
       pVal = kP*error*speedP;
     }
-    setDrive(pVal*dir, pVal*dir);
+    finalPower = pVal*dir;
+    driftError = (getDriveR() - getDriveL())*kP2*(finalPower)/100;
+    setDrive((pVal + driftError)*dir, (pVal - driftError)*dir);
   }
   driveBrake();
   return 0;
 }
 
-int turnP(int dir, double speed, double dist, double speedCut){
+int turnP(int dir, double speed, double dist, double speedStart, double speedCut){
   driveReset();
   double speedP = speed/100;
   double targetVal = dist*degConversion;
+  double speedStartDeg = speedStart*degConversion;
   double speedCutDeg = speedCut*degConversion;
-  double kP = 1;
+  double kP = 100/targetVal;
   double error = 1;
   double pVal = speed;
   while ((abs(getDriveL()) < targetVal) && (abs(getDriveR()) < targetVal)){
-    if ((abs(getDriveL()) < speedCutDeg) || (abs(getDriveR()) < speedCutDeg)){
+    if (((abs(getDriveL()) <= speedCutDeg) || (abs(getDriveR()) <= speedCutDeg)) && ((abs(getDriveL()) > speedStartDeg) || (abs(getDriveR()) > speedStartDeg))){
       error = ((targetVal - abs(getDriveL())) + (targetVal - abs(getDriveR())))/2;
       pVal = kP*error*speedP;
     }

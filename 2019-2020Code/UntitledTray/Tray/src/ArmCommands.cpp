@@ -22,7 +22,7 @@ int armEncoder(int dir, double speed, double height){
 }
 
 int getArmLimit(){
-  if (TrayLimit.pressing()){
+  if (ArmLimit.pressing()){
     return 1;
   }
   else{

@@ -26,7 +26,7 @@ int intakeControls(){
         intakeToggle = 0;
       }
     }
-    if ((Arm.rotation(rotationUnits::deg) <= 70)||((abs(getIntake()) <= 10))){
+    if (Arm.rotation(rotationUnits::deg) <= 70){
       intakeSpeed2 = 1;
     }
     else{
@@ -42,7 +42,7 @@ int intakeControls(){
       intake(OUT, (getJoystick(RIGHT_AXIS_Y) + getJoystick(LEFT_AXIS_Y))/2);
     }
     else if (getController(BTNL1)){ //outtake with arms
-      intake(OUT, 100*intakeSpeed2);
+      intake(OUT, 65*intakeSpeed2);
     }
     else{
       intakeBrake();

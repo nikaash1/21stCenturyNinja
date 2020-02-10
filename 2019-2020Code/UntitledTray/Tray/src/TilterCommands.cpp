@@ -7,9 +7,6 @@ void tray(int dir, double speed){
 
 void trayControlled(int dir, double speed, double dist){
   Tilter.startRotateFor(dist*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
-  while (Tilter.isSpinning()){
-    wait(1, msec);
-  }
 }
 
 double getTilter(){
@@ -32,11 +29,12 @@ void trayEncoder(int dir, double speed, double dist){
   Tilter.stop();
 }
 
-int trayP(int speed, double dist){
+int trayP(int speed, double dist, double targetDist){
+  Tilter.resetRotation();
   while (abs(getTilter()) < dist){
-    double error = 730 - Tilter.rotation(rotationUnits::deg);
-    double traySpeed = 0.002*error;
-    tray(TILT, 100*traySpeed*speed);
+    double error = targetDist - Tilter.rotation(rotationUnits::deg);
+    double traySpeed = 0.0011*error;
+    tray(TILT, traySpeed*speed);
   }
   trayBrake();
   return 0;

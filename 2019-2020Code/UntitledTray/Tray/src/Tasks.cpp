@@ -3,14 +3,13 @@ using namespace vex;
 
 void runDriverTasks(){
   vex::task driveControlTask(driveJoystick);
-  vex::task brakeTask(brakeControls);
   vex::task towerModeTask(towerMode);
   vex::task intakeControlTask(intakeControls);
   vex::task tilterControlTask(tilterControls);
 }
-void runAutoTasks(){
+/*void runAutoTasks(){
   vex::task autoSelectTask(autoSelector);
   vex::task autoIndicateTask(autoIndicator);
 }
 void runMiscTasks(){
-}
+}*/

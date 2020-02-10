@@ -1,8 +1,6 @@
 #include "vex.h"
 using namespace vex;
 
-int brakeVar = 0;
-
 void driveControls(int style, int driveType){
   double getAnalogRArcade = getJoystick(LEFT_AXIS_Y) - getJoystick(RIGHT_AXIS_X);
   double getAnalogLArcade = getJoystick(LEFT_AXIS_Y) - ((getJoystick(RIGHT_AXIS_X))*-1);
@@ -34,33 +32,6 @@ void driveControls(int style, int driveType){
 int driveJoystick(){
   while (1){
     driveControls(TANK, STANDARD);
-  }
-  return 0;
-}
-
-int brakeControls(){
-  while (1){
-    if ((getController(BTNA)) == 1){
-      if (brakeVar == 0){
-        wait(300, msec);
-        driveBrake();
-        brakeVar = 1;
-      }
-      else if (brakeVar == 1){
-        wait(300, msec);
-        driveCoast();
-        brakeVar = 0;
-      }
-    }
-  }
-  return 0;
-}
-
-int driveBackControl(){
-  while(1){
-    if ((getController(BTNB)) == 1){
-      driveEncoder(BACKWARD, 60, 10);
-    }
   }
   return 0;
 }
