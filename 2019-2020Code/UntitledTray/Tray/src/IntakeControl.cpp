@@ -2,8 +2,10 @@
 using namespace vex;
 
 int intakeControls(){
-  double intakeSpeed = 1;
-  double intakeSpeed2 = 1;
+  double intakeSpeed = 1; //actual intake speed to slow down with toggle
+  double intakeSpeed2 = 1; //for outtake during arm macro
+  double intakeSpeed3 = 1; //speed of intake when arms are up
+  double intakeSpeed4 = 1; //speed of intake when arms are up and toggle has occured
   int intakeToggle = 0;
   while (1){
     if (getController(BTNLEFT)){ //reset button
@@ -19,24 +21,33 @@ int intakeControls(){
       }
       if (intakeToggle == 0){
         intakeSpeed = 0.3;
+        intakeSpeed4 = 1;
         intakeToggle = 1;
       }
       else if (intakeToggle == 1){
         intakeSpeed = 1;
+        intakeSpeed4 = 1/intakeSpeed3;
         intakeToggle = 0;
       }
     }
-    if (Arm.rotation(rotationUnits::deg) <= 70){
+    //outake when arms are past 70
+    if (getArm() <= 70){
       intakeSpeed2 = 1;
     }
     else{
       intakeSpeed2 = 0;
     }
+    if (getArm() >= 120){
+      intakeSpeed3 = 0.7;
+    }
+    else{
+      intakeSpeed3 = 1;
+    }
     if (getController(BTNR1)){
-      intake(OUT, 100*intakeSpeed);
+      intake(OUT, 100*intakeSpeed*intakeSpeed3*intakeSpeed4);
     }
     else if (getController(BTNR2)){
-      intake(IN, 100*intakeSpeed);
+      intake(IN, 100*intakeSpeed*intakeSpeed3*intakeSpeed4);
     }
     else if (getController(BTNA)){
       intake(OUT, (getJoystick(RIGHT_AXIS_Y) + getJoystick(LEFT_AXIS_Y))/2);
@@ -47,6 +58,7 @@ int intakeControls(){
     else{
       intakeBrake();
     }
+    wait(10, msec);
   }
   return 0;
 }

@@ -8,7 +8,7 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  runAuto(1);
+  runAuto(BLUE_COLLECT);
 }
 
 void usercontrol(void) {

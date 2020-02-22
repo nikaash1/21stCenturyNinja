@@ -18,12 +18,16 @@ int towerMode(){
     else if (getController(BTNL2)){
       armGo(DOWN, 100);
     }
+    else if (getController(BTNR2)){ //down during intake
+      armGo(DOWN, 40);
+    }
     else if (getController(BTNB)){ //down on tilt
       armGo(DOWN, 100);
     }
     else{
       armBrake();
     }
+    wait(10, msec);
   }
   return 0;
 }

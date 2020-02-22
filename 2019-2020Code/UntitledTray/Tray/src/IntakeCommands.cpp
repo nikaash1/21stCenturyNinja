@@ -15,10 +15,29 @@ void intakeCoast(){
   LIntake.stop(coast);
 }
 
+void intakeEncoder(int dir, double speed, double deg){
+  RIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  LIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
+  while(RIntake.isSpinning()){
+    wait(1, msec);
+  }
+}
+
+
 void intakeControlled(int dir, double speed, double deg){
   RIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
   LIntake.startRotateFor(deg*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
-  while((RIntake.isSpinning())||(RIntake.isSpinning())){
+}
+
+void intakeDeploy(int dir, double speed, double armVal){
+  while (Arm.isSpinning()){
+    if (Arm.rotation(rotationUnits::deg) <= armVal){
+      RIntake.spin(fwd, 0.12*speed*dir, volt);
+      LIntake.spin(fwd, 0.12*speed*dir, volt);
+    }
+    else{
+      intakeBrake();
+    }
     wait(1, msec);
   }
 }

@@ -13,11 +13,21 @@ void armCoast(){
   Arm.stop(coast);
 }
 
+double getArm(){
+  double armVal = Arm.rotation(rotationUnits::deg);
+  return armVal;
+}
+
 int armEncoder(int dir, double speed, double height){
   Arm.startRotateFor(height*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
   while (Arm.isSpinning()){
     wait(1, msec);
   }
+  return 0;
+}
+
+int armControlled(int dir, double speed, double height){
+  Arm.startRotateFor(height*dir, rotationUnits::deg, speed*dir, velocityUnits::pct);
   return 0;
 }
 

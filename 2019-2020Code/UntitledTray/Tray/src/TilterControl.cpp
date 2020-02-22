@@ -29,14 +29,14 @@ int tilterControls(){
     if (getTrayLimit()){ //reset switch
       Tilter.resetRotation();
     }
-    if (Tilter.rotation(rotationUnits::deg) >= 350){ //trayP
+    if (Tilter.rotation(rotationUnits::deg) >= 400){ //trayP
       double error = 850 - Tilter.rotation(rotationUnits::deg);
-      traySpeed = 0.0016*error;
+      traySpeed = 0.0012*error;
     }
     else{
-      traySpeed = 1; //tray speed is 1 unless it is past 200 degreese
+      traySpeed = 1; //tray speed is 1 unless it is past 400 degreese
     }
-    if ((Tilter.rotation(rotationUnits::deg) >= 150)){ //tray only tilts with arms until 100 degrees
+    if ((Tilter.rotation(rotationUnits::deg) >= 150)){ //tray only tilts with arms until 150 degrees
       traySpeed2 = 0;
     }
     else{
@@ -58,5 +58,6 @@ int tilterControls(){
       trayBrake();
     }
   }
+  wait(10, msec);
   return 0;
 }

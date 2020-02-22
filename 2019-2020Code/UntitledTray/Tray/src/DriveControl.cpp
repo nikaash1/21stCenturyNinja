@@ -32,6 +32,7 @@ void driveControls(int style, int driveType){
 int driveJoystick(){
   while (1){
     driveControls(TANK, STANDARD);
+    wait(10, msec);
   }
   return 0;
 }
