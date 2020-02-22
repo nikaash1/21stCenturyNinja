@@ -188,7 +188,7 @@ void swingEncoder(double speedL, double speedR, double distL, double distR){
 
 
 //PID
-int goP(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut){
+int goP(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut, double slowFactor, bool smooth){
   driveReset();
   double speedP = speed/100;
   double targetVal = dist*inchesConversion;
@@ -196,13 +196,21 @@ int goP(int dir, double initSpeed, double speed, double dist, double speedStart,
   double speedCutInches = speedCut*inchesConversion;
   double kP = 100/targetVal;
   double kP2 = 8;
+  double kPSlow = slowFactor/100;
   double error = 1;
   double driftError = 0;
   double pVal = initSpeed;
   double finalPower = speed;
+  double speedSmooth;
+  if (smooth){
+    speedSmooth = speedStartInches;
+  }
+  else{
+    speedSmooth = 0;
+  }
   while (abs(getDrive()) < targetVal){
     if ((abs(getDrive()) <= speedCutInches) && (abs(getDrive()) > speedStartInches)){
-      error = targetVal - abs(getDrive());
+      error = (targetVal + speedSmooth) - (abs(getDrive())*kPSlow);
       pVal = kP*error*speedP;
     }
     finalPower = pVal*dir;
@@ -213,18 +221,26 @@ int goP(int dir, double initSpeed, double speed, double dist, double speedStart,
   return 0;
 }
 
-int turnP(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut){
+int turnP(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut, double slowFactor, bool smooth){
   driveReset();
   double speedP = speed/100;
   double targetVal = dist*degConversion;
   double speedStartDeg = speedStart*degConversion;
   double speedCutDeg = speedCut*degConversion;
   double kP = 100/targetVal;
+  double kPSlow = slowFactor/100;
   double error = 1;
   double pVal = initSpeed;
+  double speedSmooth;
+  if (smooth){
+    speedSmooth = speedStartDeg;
+  }
+  else{
+    speedSmooth = 0;
+  }
   while ((abs(getDriveL()) < targetVal) && (abs(getDriveR()) < targetVal)){
     if (((abs(getDriveL()) <= speedCutDeg) || (abs(getDriveR()) <= speedCutDeg)) && ((abs(getDriveL()) > speedStartDeg) || (abs(getDriveR()) > speedStartDeg))){
-      error = ((targetVal - abs(getDriveL())) + (targetVal - abs(getDriveR())))/2;
+      error = (((targetVal + speedSmooth) - (abs(getDriveL())*kPSlow)) + ((targetVal + speedSmooth) - (abs(getDriveR())*kPSlow)))/2;
       pVal = kP*error*speedP;
     }
     setDrive(-1*pVal*dir, pVal*dir);
@@ -262,66 +278,6 @@ int correctP(double speed, double targetDifference){
     rawError = (getDriveR() - getDriveL());
     driftError = (getDriveR() - getDriveL())*kP;
     setDrive(driftError*speedP, -1*driftError*speedP);
-  }
-  driveBrake();
-  return 0;
-}
-
-int goPWithArms(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut, double armStart, double armDir, double armSpeed, double armDist){
-  driveReset();
-  Arm.resetRotation();
-  double speedP = speed/100;
-  double targetVal = dist*inchesConversion;
-  double speedStartInches = speedStart*inchesConversion;
-  double speedCutInches = speedCut*inchesConversion;
-  double armStartInches = armStart*inchesConversion;
-  double kP = 100/targetVal;
-  double kP2 = 8;
-  double error = 1;
-  double driftError = 0;
-  double pVal = initSpeed;
-  double finalPower = speed;
-  while (abs(getDrive()) < targetVal){
-    if ((abs(getDrive()) <= speedCutInches) && (abs(getDrive()) > speedStartInches)){
-      error = targetVal - abs(getDrive());
-      pVal = kP*error*speedP;
-    }
-    if ((abs(getDrive()) >= armStartInches) && (Arm.rotation(rotationUnits::deg) <= armDist)){
-      armGo(armDir, armSpeed);
-    }
-    finalPower = pVal*dir;
-    driftError = (getDriveR() - getDriveL())*kP2*(finalPower)/100;
-    setDrive((pVal + driftError)*dir, (pVal - driftError)*dir);
-  }
-  driveBrake();
-  return 0;
-}
-
-int goPWithIntake(int dir, double initSpeed, double speed, double dist, double speedStart, double speedCut, double intakeStart, double intakeDir, double intakeSpeed){
-  driveReset();
-  Arm.resetRotation();
-  double speedP = speed/100;
-  double targetVal = dist*inchesConversion;
-  double speedStartInches = speedStart*inchesConversion;
-  double speedCutInches = speedCut*inchesConversion;
-  double intakeStartInches = intakeStart*inchesConversion;
-  double kP = 100/targetVal;
-  double kP2 = 8;
-  double error = 1;
-  double driftError = 0;
-  double pVal = initSpeed;
-  double finalPower = speed;
-  while (abs(getDrive()) < targetVal){
-    if ((abs(getDrive()) <= speedCutInches) && (abs(getDrive()) > speedStartInches)){
-      error = targetVal - abs(getDrive());
-      pVal = kP*error*speedP;
-    }
-    if (abs(getDrive()) >= intakeStartInches){
-      intake(intakeDir, intakeSpeed);
-    }
-    finalPower = pVal*dir;
-    driftError = (getDriveR() - getDriveL())*kP2*(finalPower)/100;
-    setDrive((pVal + driftError)*dir, (pVal - driftError)*dir);
   }
   driveBrake();
   return 0;

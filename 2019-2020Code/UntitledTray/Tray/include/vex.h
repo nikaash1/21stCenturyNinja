@@ -77,7 +77,7 @@ using namespace std;
 //auton
 #define DEPLOY 0
 #define RED_COLLECT 1
-#define RED_PLACE 2
-#define RED_NEW 3
+#define RED_SMALL_PLACE 2
+#define RED_SMALL_7 3
 #define BLUE_COLLECT 4
 #define TOTAL_AUTONS 5
