@@ -76,8 +76,9 @@ using namespace std;
 #define UNTILT -1
 //auton
 #define DEPLOY 0
-#define RED_COLLECT 1
-#define RED_SMALL_PLACE 2
-#define RED_SMALL_7 3
+#define RED_SMALL_PLACE 1
+#define BLUE_SMALL_PLACE 2
+#define RED_COLLECT 3
 #define BLUE_COLLECT 4
-#define TOTAL_AUTONS 5
+#define SKILLS 5
+#define TOTAL_AUTONS 6

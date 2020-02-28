@@ -37,8 +37,8 @@ int intakeControls(){
     else{
       intakeSpeed2 = 0;
     }
-    if (getArm() >= 120){
-      intakeSpeed3 = 0.7;
+    if (getArm() >= 100){
+      intakeSpeed3 = 0.6;
     }
     else{
       intakeSpeed3 = 1;
