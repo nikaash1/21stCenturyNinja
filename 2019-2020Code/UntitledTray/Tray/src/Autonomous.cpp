@@ -19,52 +19,103 @@ void redSmallPlace(){
   //deploy
   intakeBrake();
   goP(FORWARD, 90, 90, 11, 1, 6, 110, true);
-  wait(300, msec);
+  wait(400, msec);
   driveTime(BACKWARD, 40, 700);
   setDrive(-40, -40);
   armEncoder(UP, 100, 140);
   intakeDeploy(OUT, 50, 70);
   armGo(DOWN, 100);
   tray(UNTILT, 100);
-  wait(2000, msec);
+  wait(1800, msec);
   tray(UNTILT, 15);
 
   //cubes 1-5
   intake(IN, 100);
-  goP(FORWARD, 60, 80, 40, 3, 20, 160, true);
+  goP(FORWARD, 60, 50, 36, 10, 21, 160, true);
   wait(100, msec);
 
   //cube 6
-  turnP(LEFT, 100, 100, 30, 5, 20, 100, true);
+  turnP(LEFT, 80, 80, 25, 5, 20, 100, true);
   wait(200, msec);
-  goP(FORWARD, 100, 100, 7, 1, 4, 110, true);
+  goP(FORWARD, 100, 100, 11, 1, 4, 110, true);
   wait(200, msec);
 
   //back up and align with zone
-  turnP(RIGHT, 100, 100, 30, 5, 20, 100, true);
+  turnP(RIGHT, 100, 100, 28, 5, 20, 100, true);
   wait(100, msec);
-  goP(BACKWARD, 100, 100, 38, 8, 32, 100, true);
-  intakeBrake();
+  goP(BACKWARD, 100, 100, 40, 8, 32, 100, true);
+  //intakeBrake();
   wait(100, msec);
   intakeControlled(OUT, 50, 100);
-  turnP(RIGHT, 100, 100, 114, 10, 70, 120, true);
+  turnP(RIGHT, 100, 100, 120, 10, 70, 120, true);
 
   //tilt
   trayControlled(TILT, 100, 200);
-  driveTime(FORWARD, 40, 600);
+  driveTime(FORWARD, 40, 700);
+  armGo(DOWN, 10);
   intake(OUT, 20);
   trayEncoder(TILT, 60, 300);
   trayEncoder(TILT, 40, 150);
+  armBrake();
   wait(100, msec);
   
   //back out
   intake(OUT, 100);
-  goP(BACKWARD, 100, 100, 7, 0, 0, 100, false);
+  goP(BACKWARD, 80, 80, 7, 0, 0, 100, false);
   trayTime(UNTILT, 30, 500);
 }
 
 void blueSmallPlace(){
 
+//deploy
+
+//deploy
+  intakeBrake();
+  goP(FORWARD, 90, 90, 11, 1, 6, 110, true);
+  wait(400, msec);
+  driveTime(BACKWARD, 40, 700);
+  setDrive(-40, -40);
+  armEncoder(UP, 100, 140);
+  intakeDeploy(OUT, 50, 70);
+  armGo(DOWN, 100);
+  tray(UNTILT, 100);
+  wait(1800, msec);
+  tray(UNTILT, 15);
+
+  //cubes 1-5
+  intake(IN, 100);
+  goP(FORWARD, 60, 50, 36, 10, 21, 160, true);
+  wait(100, msec);
+
+  //cube 6
+  turnP(RIGHT, 80, 80, 34, 5, 20, 100, true);
+  wait(200, msec);
+  goP(FORWARD, 100, 100, 11, 1, 4, 110, true);
+  wait(200, msec);
+
+  //back up and align with zone
+  turnP(LEFT, 100, 100, 31, 5, 20, 100, true);
+  wait(100, msec);
+  goP(BACKWARD, 100, 100, 40, 8, 32, 100, true);
+  //intakeBrake();
+  wait(100, msec);
+  intakeControlled(OUT, 50, 100);
+  turnP(LEFT, 100, 100, 110, 10, 70, 120, true);
+
+  //tilt
+  trayControlled(TILT, 100, 200);
+  driveTime(FORWARD, 40, 800);
+  armGo(DOWN, 10);
+  intake(OUT, 20);
+  trayEncoder(TILT, 60, 300);
+  trayEncoder(TILT, 40, 150);
+  armBrake();
+  wait(100, msec);
+  
+  //back out
+  intake(OUT, 100);
+  goP(BACKWARD, 80, 80, 7, 0, 0, 100, false);
+  trayTime(UNTILT, 30, 500);
 }
 
 
@@ -197,63 +248,183 @@ void skills(){
 
   //align with first tower
   intake(IN, 100);
-  goP(FORWARD, 60, 60, 18, 0, 12, 100, false);
+  goP(FORWARD, 60, 60, 6, 0, 2, 100, false);
+  wait(200, msec);
   intakeControlled(OUT, 50, 120);
   wait(500, msec);
-  turnP(RIGHT, 60, 60, 90, 0, 60, 100, false);
+  turnP(RIGHT, 60, 60, 50, 0, 35, 100, false);
   wait(700, msec);
 
   //tower 1
-  armControlled(UP, 60, 200);
-  goP(FORWARD, 50, 50, 13, 0, 7, 100, false);
+  trayEncoder(TILT, 90, 30);
+  armControlled(UP, 60, 275);
+  goP(FORWARD, 50, 50, 16, 0, 10, 100, false);
   wait(500, msec);
-  intake(OUT, 30);
+  intake(OUT, 40);
   wait(1200, msec);
 
   //align with cubes 1-9
-  goP(BACKWARD, 50, 50, 13, 0, 7, 100, false);
+  goP(BACKWARD, 50, 50, 10.25, 0, 7, 100, false);
   wait(500, msec);
   intakeBrake();
-  armControlled(DOWN, 60, 200);
-  turnP(LEFT, 60, 60, 90, 0, 60, 100, false);
+  
+  turnP(LEFT, 60, 60, 50, 0, 40, 100, false);
   wait(700, msec);
-  goP(BACKWARD, 60, 60, 18, 0, 12, 100, false);
+  //goP(BACKWARD, 60, 60, 18, 0, 12, 100, false);
   intake(IN, 100);
-  armGo(DOWN, 60);
+  
   wait(500, msec);
   driveTime(BACKWARD, 30, 700);
-  wait(500, msec);
+  driveTime(BACKWARD, 100, 200);
+  wait(60, msec);
+  armControlled(DOWN, 60, 275);
+  tray(UNTILT, 100);
+  armGo(DOWN, 60);
+  wait(1500, msec);
+  
 
   //cubes 1-9
-  goP(FORWARD, 50, 50, 110, 80, 90, 150, true);
+  goP(FORWARD, 40, 30, 110, 40, 50, 150, true);
   wait(500, msec);
 
   //align with zone
-  turnP(RIGHT, 60, 60, 90, 0, 60, 100, false);
+  turnP(RIGHT, 60, 60, 42, 0, 30, 100, false);
   wait(700, msec);
-  intakeControlled(OUT, 30, 100);
-  goP(FORWARD, 60, 60, 18, 0, 12, 100, false);
-  wait(500, msec);
+  intakeControlled(OUT, 30, 70);
+  goP(FORWARD, 60, 60, 10, 0, 8, 100, false);
+  //wait(5000, msec);
 
   //tilt
-  intake(OUT, 10);
+  driveTime(FORWARD, 40, 600);
+  
+  //intake(OUT, 10);
   armGo(DOWN, 100);
-  trayEncoder(TILT, 50, 150);
-  trayEncoder(TILT, 40, 150);
-  trayEncoder(TILT, 30, 175);
+  //trayEncoder(TILT, 75, 150);
+  trayEncoder(TILT, 100, 400);
+  trayEncoder(TILT, 45, 200);
   intake(OUT, 30);
-  trayEncoder(TILT, 20, 125);
-  trayControlled(TILT, 25, 150);
+  //trayEncoder(TILT, 40, 125);
+  trayControlled(TILT, 20, 200);
+  wait(1000, msec);
 
   //back out
   intake(OUT, 60);
-  goP(BACKWARD, 30, 30, 18, 0, 6, 100, false);
-  trayControlled(UNTILT, 60, 600);
+  goP(BACKWARD, 30, 30, 33, 4, 8, 100, false);
+  trayControlled(UNTILT, 60, 800);
   wait(500, msec);
 
   //collect tower 2 cube
-}
+  turnP(RIGHT, 60, 60, 144, 0, 60, 100, false);
+  driveTime(BACKWARD, 30, 3400);
+  intake(IN, 100);
+  goP(FORWARD, 50, 30, 45, 30, 40, 150, true);
+  
+  //tower2
+ intakeControlled(OUT, 50, 120);
+ goP(BACKWARD, 30, 30, 8, 0, 2, 100, false);
+ trayEncoder(TILT, 90, 30);
+  armControlled(UP, 60, 275);
+  goP(FORWARD, 30, 30, 11, 0, 6, 100, false);
+  wait(500, msec);
+  intake(OUT, 40);
+  wait(1200, msec);
 
+}
+void redlarge(){
+  //deploy
+  intakeBrake();
+  goP(FORWARD, 50, 50, 11, 0, 6, 100, false);
+  wait(300, msec);
+  driveTime(BACKWARD, 60, 700);
+  setDrive(-40, -40);
+  armEncoder(UP, 100, 140);
+  intakeDeploy(OUT, 50, 70);
+  armGo(DOWN, 100);
+  tray(UNTILT, 100);
+  wait(1900, msec);
+  tray(UNTILT, 15);
+
+  //cube 2
+  intake(IN, 100);
+  goP(FORWARD, 60, 60, 16, 0, 6, 100, false);
+  wait(200, msec);
+
+  //cube 3 
+  turnP(RIGHT, 50, 50, 90, 0, 20, 100, false);
+  wait(200, msec);
+  goP(FORWARD, 60, 60, 8, 0, 2, 100, false);
+  wait(200, msec);
+  goP(BACKWARD, 60, 60, 8, 0, 12, 100, false);
+  //cube 4
+  turnP(LEFT, 50, 50, 165, 0, 60, 100, false);
+  wait(100, msec);
+  goP(FORWARD, 60, 60, 16, 0, 8, 100, false);
+  wait(200, msec);
+  
+  //score
+  turnP(LEFT, 60, 60, 44, 0, 10, 100, false);
+  intakeBrake();
+  wait(300, msec);
+  intakeControlled(OUT, 100, 60);
+  goP(FORWARD, 60, 60, 5, 0, 0, 100, false);
+  driveTime(FORWARD, 40, 500);
+  trayControlled(TILT, 100, 200);
+  //intake(OUT, 20);
+  trayEncoder(TILT, 70, 400);
+  trayEncoder(TILT, 50, 150);
+  wait(100, msec);
+  intake(OUT, 100);
+  goP(BACKWARD, 80, 80, 7, 0, 0, 100, false);
+  trayTime(UNTILT, 30, 500);
+
+}
+void bluelarge(){
+ //deploy
+  intakeBrake();
+  goP(FORWARD, 50, 50, 11, 0, 6, 100, false);
+  wait(300, msec);
+  driveTime(BACKWARD, 60, 700);
+  setDrive(-40, -40);
+  armEncoder(UP, 100, 140);
+  intakeDeploy(OUT, 50, 70);
+  armGo(DOWN, 100);
+  tray(UNTILT, 100);
+  wait(1900, msec);
+  tray(UNTILT, 15);
+
+  //cube 2
+  intake(IN, 100);
+  goP(FORWARD, 60, 60, 16, 0, 6, 100, false);
+  wait(200, msec);
+
+  //cube 3 
+  turnP(LEFT, 50, 50, 90, 0, 20, 100, false);
+  wait(200, msec);
+  goP(FORWARD, 60, 60, 8, 0, 2, 100, false);
+  wait(200, msec);
+  goP(BACKWARD, 60, 60, 8, 0, 12, 100, false);
+  //cube 4
+  turnP(RIGHT, 50, 50, 175, 0, 60, 100, false);
+  wait(100, msec);
+  goP(FORWARD, 60, 60, 16, 0, 8, 100, false);
+  wait(200, msec);
+  
+  //score
+  turnP(RIGHT, 60, 60, 4, 0, 10, 100, false);
+  intakeBrake();
+  wait(300, msec);
+  intakeControlled(OUT, 100, 60);
+  goP(FORWARD, 60, 60, 5, 0, 0, 100, false);
+  driveTime(FORWARD, 40, 500);
+  trayControlled(TILT, 100, 200);
+  //intake(OUT, 20);
+  trayEncoder(TILT, 70, 400);
+  trayEncoder(TILT, 50, 150);
+  wait(100, msec);
+  intake(OUT, 100);
+  goP(BACKWARD, 80, 80, 7, 0, 0, 100, false);
+  trayTime(UNTILT, 30, 500);
+}
 void runAuto(int autoNumber){
   if (autoNumber == 0){
     deploy();
@@ -272,5 +443,11 @@ void runAuto(int autoNumber){
   }
   else if (autoNumber == 5){
     skills();
+  }
+  else if (autoNumber == 7){
+    redlarge();
+  }
+  else if (autoNumber == 8){
+    bluelarge();
   }
 }

@@ -8,7 +8,7 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  runAuto(SKILLS);
+  runAuto(BLUE_LARGE);
 }
 
 void usercontrol(void) {

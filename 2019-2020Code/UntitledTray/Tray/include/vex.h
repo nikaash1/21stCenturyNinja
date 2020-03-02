@@ -82,3 +82,5 @@ using namespace std;
 #define BLUE_COLLECT 4
 #define SKILLS 5
 #define TOTAL_AUTONS 6
+#define RED_LARGE 7
+#define BLUE_LARGE 8
