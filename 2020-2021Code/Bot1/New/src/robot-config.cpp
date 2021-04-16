@@ -9,18 +9,17 @@ brain  Brain;
 //controller
 controller Controller = controller(primary);
 //motors
-motor FLWheel = motor(PORT1, ratio18_1, true);
-motor FRWheel = motor(PORT19, ratio18_1, false);
-motor BLWheel = motor(PORT2, ratio18_1, true);
-motor BRWheel = motor(PORT20, ratio18_1, false);
-motor Tilter = motor(PORT18, ratio36_1, true);
-motor Arm = motor(PORT3, ratio36_1, false);
-motor RIntake = motor(PORT10, ratio36_1, true);
-motor LIntake = motor(PORT5, ratio36_1, false);
+motor FLWheel = motor(PORT6, ratio6_1, false);
+motor FRWheel = motor(PORT3, ratio6_1, true);
+motor BLWheel = motor(PORT13, ratio6_1, true);
+motor BRWheel = motor(PORT19, ratio6_1, false);
+motor MLWheel = motor(PORT17, ratio6_1, true);
+motor MRWheel = motor(PORT5, ratio6_1, false);
+motor Intake = motor(PORT15, ratio6_1, true);
+motor Lift = motor(PORT11, ratio18_1, false);
 //sensors
-inertial Inertia = inertial(PORT21);
-limit TrayLimit = limit(Brain.ThreeWirePort.H);
-limit ArmLimit = limit(Brain.ThreeWirePort.G);
+inertial Inertia = inertial(PORT1);
+bumper LiftLimit = bumper(Brain.ThreeWirePort.G);
 
 void vexcodeInit( void ) {
 }

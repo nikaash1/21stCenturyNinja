@@ -1,8 +1,8 @@
 #include "vex.h"
 using namespace vex;
 //conversions
-double inchesConversion = 1;
-double degConversion = 1;
+double inchesConversionPID = 1;
+double degConversionPID = 1;
 //straight variables
 int straightDir = 1;
 double straightInitSpeed = 0;
@@ -27,22 +27,22 @@ int isTurning = 0;
 //calculate PID
 int calculatePID(){
 
-  double straightKP = 100/straightTarget;
+  //double straightKP = 100/straightTarget;
   double straightKP2 = 8;
-  double straightKPSlow = straightSlowFactor/100;
-  double straightError = 1;
+  //double straightKPSlow = straightSlowFactor/100;
+  //double straightError = 1;
   double driftError = 0;
-  double straightPVal = straightInitSpeed;
+  //double straightPVal = straightInitSpeed;
   double straightFinalPower = straightSpeed;
   double straightSpeedSmooth;
 
-  double turnKP = 100/turnTarget;
-  double turnKP2 = 8;
-  double turnKPSlow = turnSlowFactor/100;
-  double turnError = 1;
-  double turnPVal = turnInitSpeed;
+  //double turnKP = 100/turnTarget;
+  //double turnKP2 = 8;
+  //double turnKPSlow = turnSlowFactor/100;
+  //double turnError = 1;
+  //double turnPVal = turnInitSpeed;
   double turnFinalPower = turnSpeed;
-  double turnSpeedSmooth;
+  //double turnSpeedSmooth;
   if (straightSmooth){
     straightSpeedSmooth = straightSpeedStart;
   }
@@ -62,9 +62,9 @@ int go(int dir, double initSpeed, double speed, double dist, double speedStart, 
   straightDir = dir;
   straightInitSpeed = initSpeed;
   straightSpeed = speed;
-  straightTarget = dist*inchesConversion;
-  straightSpeedStart = speedStart*inchesConversion;
-  straightSpeedCut = speedCut*inchesConversion;
+  straightTarget = dist*inchesConversionPID;
+  straightSpeedStart = speedStart*inchesConversionPID;
+  straightSpeedCut = speedCut*inchesConversionPID;
   straightSlowFactor = slowFactor;
   straightSmooth = smooth;
   isTurning = 0;
@@ -76,9 +76,9 @@ int turn(int dir, double initSpeed, double speed, double dist, double speedStart
   turnDir = dir;
   turnInitSpeed = initSpeed;
   turnSpeed = speed;
-  turnTarget = dist*inchesConversion;
-  turnSpeedStart = speedStart*inchesConversion;
-  turnSpeedCut = speedCut*inchesConversion;
+  turnTarget = dist*inchesConversionPID;
+  turnSpeedStart = speedStart*inchesConversionPID;
+  turnSpeedCut = speedCut*inchesConversionPID;
   turnSlowFactor = slowFactor;
   turnSmooth = smooth;
   isStraight = 0;

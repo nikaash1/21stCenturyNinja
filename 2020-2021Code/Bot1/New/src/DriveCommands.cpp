@@ -1,8 +1,8 @@
 #include "vex.h"
 using namespace vex;
 
-double inchesConversion = 1;
-double degConversion = 1;
+double inchesConversion = 30*(7/3);
+double degConversion = 3.5*(7/3);
 
 //drive encoders
 double getDriveFL(){
@@ -37,6 +37,7 @@ double getDrive(){
   double rot = (getDriveFL() + getDriveFR() + getDriveBL() + getDriveBR())/4;
   return rot;
 }
+
 void driveReset(){
   FLWheel.resetRotation();
   FRWheel.resetRotation();
@@ -62,8 +63,10 @@ double getHeatBR(){
 void setDrive(double lSpeed, double rSpeed){
   FLWheel.spin(fwd, 0.12*lSpeed, volt);
   BLWheel.spin(fwd, 0.12*lSpeed, volt);
+  MLWheel.spin(fwd, 0.12*lSpeed, volt);
   FRWheel.spin(fwd, 0.12*rSpeed, volt);
   BRWheel.spin(fwd, 0.12*rSpeed, volt);
+  MRWheel.spin(fwd, 0.12*rSpeed, volt);
 }
 
 //set each drive motor (voltage)
@@ -122,7 +125,7 @@ int goP(int dir, double initSpeed, double speed, double dist, double speedStart,
   double speedStartInches = speedStart*inchesConversion;
   double speedCutInches = speedCut*inchesConversion;
   double kP = 100/targetVal;
-  double kP2 = 8;
+  double kP2 = 3;
   double kPSlow = slowFactor/100;
   double error = 1;
   double driftError = 0;

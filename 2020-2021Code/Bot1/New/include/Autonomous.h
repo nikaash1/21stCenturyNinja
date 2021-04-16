@@ -1,4 +1,4 @@
-void deploy();
+void idle();
 void redAuto();
 void blueAuto();
 void skills();

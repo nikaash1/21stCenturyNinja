@@ -8,7 +8,7 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  runAuto(NONE);
+  runAuto(RED);
 }
 
 void usercontrol(void) {
@@ -20,6 +20,14 @@ int main() {
   Competition.drivercontrol(usercontrol);
   pre_auton();
   while (true) {
+    if(getLiftLimit()){
+      Brain.Screen.setFillColor(yellow);
+      Brain.Screen.drawRectangle(0, 0, 1000, 1000);
+    }
+    else{
+      Brain.Screen.setFillColor(purple);
+      Brain.Screen.drawRectangle(0, 0, 1000, 1000);
+    }
     wait(100, msec);
   }
 }

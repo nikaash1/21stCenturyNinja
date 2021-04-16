@@ -17,6 +17,10 @@
 #include "Autonomous.h"
 #include "InertiaCommands.h"
 #include "DrivePID.h"
+#include "LiftCommands.h"
+#include "LiftControl.h"
+#include "IntakeCommands.h"
+#include "IntakeControl.h"
 
 using namespace std;
 
@@ -31,6 +35,7 @@ using namespace std;
 //drive controls
 #define TANK 1
 #define ARCADE 2
+//drive types
 #define STANDARD 1
 #define XDRIVE 2
 #define HDRIVE 3
@@ -58,9 +63,12 @@ using namespace std;
 #define FORWARD 1
 #define BACKWARD -1
 #define REVERSE -1
-//tilter
-#define TILT 1
-#define UNTILT -1
+//lift
+#define UP 1
+#define DOWN -1
+//intake
+#define INTAKE -1
+#define OUTTAKE 1
 //auton
 #define NONE 0
 #define RED 1
